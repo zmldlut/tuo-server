@@ -1,6 +1,6 @@
 <?php
 /**
- * Global settings
+ * Global settings   
  */
 require_once 'global.defines.php';
 
