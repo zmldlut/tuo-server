@@ -14,4 +14,5 @@ $app->setDebug(true);
 // 设置Controller类的类名后缀
 $app->run(array(
 	'defaultClassSuffix' => 'Server'
+		
 ));
