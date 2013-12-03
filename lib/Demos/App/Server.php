@@ -105,10 +105,10 @@ class Demos_App_Server extends Hush_Service
 	 */
 	public function doAuth ()
 	{
-		if (!isset($_SESSION['customer'])) {
+		if (!isset($_SESSION['user'])) {
 			$this->render('10001', 'Please login firstly.');
 		} else {
-			$this->customer = $_SESSION['customer'];
+			$this->user = $_SESSION['user'];
 		}
 	}
 	

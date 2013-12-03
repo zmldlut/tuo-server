@@ -40,11 +40,11 @@ class Core_Notice extends Demos_Dao_Core
 	
 	/**
 	 * Set notice read
-	 * @param int $customerId
+	 * @param int $userId
 	 */
-	public function setRead ($customerId) {
+	public function setRead ($userId) {
 		$sql = $this->select()->from($this->t1, '*')
-			->where("customerid = ?", $customerId)
+			->where("userid = ?", $userId)
 			->where("status = 0");
 		
 		$row = $this->dbr()->fetchRow($sql);
@@ -57,53 +57,86 @@ class Core_Notice extends Demos_Dao_Core
 	}
 	
 	/**
-	 * Add fanscount by one
-	 * @param int $customerId
+	 * Set notice read
+	 * @param int $id
 	 */
-	public function addFanscount ($customerId, $addCount = 1)
-	{
+	public function setReadById ($id) {
 		$sql = $this->select()->from($this->t1, '*')
-			->where("customerid = ?", $customerId)
-			->where("status = 0");
-		
+		->where("id = ?", $id)
+		->where("status = 0");
+	
 		$row = $this->dbr()->fetchRow($sql);
-		// update
 		if ($row) {
-			$fanscount = intval($row['fanscount']) + $addCount;
 			$this->update(array(
-				'id'		=> intval($row['id']),
-				'fanscount'	=> $fanscount
-			));
-		// insert
-		} else {
-			$this->create(array(
-				'customerid'	=> $customerId,
-				'fanscount'		=> 1
+					'id'		=> intval($row['id']),
+					'status'	=> 1
 			));
 		}
 	}
 	
+// 	/**
+// 	 * Add fanscount by one
+// 	 * @param int $customerId
+// 	 */
+// 	public function addFanscount ($customerId, $addCount = 1)
+// 	{
+// 		$sql = $this->select()->from($this->t1, '*')
+// 			->where("customerid = ?", $customerId)
+// 			->where("status = 0");
+		
+// 		$row = $this->dbr()->fetchRow($sql);
+// 		// update
+// 		if ($row) {
+// 			$fanscount = intval($row['fanscount']) + $addCount;
+// 			$this->update(array(
+// 				'id'		=> intval($row['id']),
+// 				'fanscount'	=> $fanscount
+// 			));
+// 		// insert
+// 		} else {
+// 			$this->create(array(
+// 				'customerid'	=> $customerId,
+// 				'fanscount'		=> 1
+// 			));
+// 		}
+// 	}
+	
 	/**
 	 * Get notification list
-	 * @param int $customerId
+	 * @param int $userId
 	 * @return array
 	 */
-	public function getByCustomer ($customerId)
+	public function getByUser ($userId)
 	{
 		$sql = $this->select()->from($this->t1, '*')
-			->where("customerid = ?", $customerId)
+			->where("userid = ?", $userId)
 			->where("status = 0");
 		
 		$row = $this->dbr()->fetchRow($sql);
-		$msg = trim($row['message']);
+		$msg = trim($row['content']);
 		// when message is empty 
 		if (strlen($msg) > 0) {
 			return $row;
 		}
-		// when has new fans
-		$fans = intval($row['fanscount']);
-		if ($fans > 0) {
-			$row['message'] = L('cn', 'notice', $row['fanscount']);
+		// return null
+		return null;
+	}
+	
+	/**
+	 * Get notification
+	 * @param int $Id
+	 * @return notice
+	 */
+	public function getById ($Id)
+	{
+		$sql = $this->select()->from($this->t1, '*')
+		->where("id = ?", $Id)
+		->where("status = 0");
+	
+		$row = $this->dbr()->fetchRow($sql);
+		$msg = trim($row['content']);
+		// when message is empty
+		if (strlen($msg) > 0) {
 			return $row;
 		}
 		// return null

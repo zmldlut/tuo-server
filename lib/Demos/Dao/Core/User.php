@@ -4,7 +4,7 @@
  *
  * @category   Demos
  * @package    Demos_Dao_Core
- * @author     James.Huang <shagoo@gmail.com>
+ * @author     Minlei.Zhang <zml@mail.dlut.edu.cn>
  * @license    http://www.apache.org/licenses/LICENSE-2.0
  * @version    $Id$
  */
@@ -15,12 +15,12 @@ require_once 'Demos/Util/Image.php';
 /**
  * @package Demos_Dao_Core
  */
-class Core_Customer extends Demos_Dao_Core
+class Core_User extends Demos_Dao_Core
 {
 	/**
 	 * @static
 	 */
-	const TABLE_NAME = 'customer';
+	const TABLE_NAME = 'user';
 	
 	/**
 	 * @static
@@ -55,13 +55,26 @@ class Core_Customer extends Demos_Dao_Core
 	}
 	
 	/**
-	 * Get customer by id
+	 * Get user by id
 	 * @param int $id
 	 */
 	public function getById ($id) {
-		$customer = $this->read($id);
-		$customer['faceurl'] = Demos_Util_Image::getFaceUrl($customer['face']);
-		return $customer;
+		$user = $this->read($id);
+		$user['faceurl'] = Demos_Util_Image::getFaceUrl($user['face']);
+		return $user;
+	}
+	
+	/**
+	 * Get user by name
+	 * @param int $name
+	 */
+	public function getByName ($name) {
+		$sql = $this->select()
+		->from($this->t1, '*')
+		->where("{$this->t1}.name = ?", $name);
+		$user = $this->dbr()->fetchRow($sql);
+		$user['faceurl'] = Demos_Util_Image::getFaceUrl($user['face']);
+		return $user;
 	}
 	
 	/**
@@ -70,9 +83,9 @@ class Core_Customer extends Demos_Dao_Core
 	 */
 	public function addEIOcount ($id, $addCount = 1)
 	{
-		$customer = $this->read($id);
-		$customer['EIOcount'] = $customer['EIOcount'] + $addCount;
-		$this->update($customer);
+		$user = $this->read($id);
+		$user['eiocount'] = $user['eiocount'] + $addCount;
+		$this->update($user);
 	}
 	
 	/**
@@ -81,25 +94,25 @@ class Core_Customer extends Demos_Dao_Core
 	 */
 	public function addFriendscount ($id, $addCount = 1)
 	{
-		$customer = $this->read($id);
-		$customer['friendscount'] = intval($customer['friendscount']) + $addCount;
-		$this->update($customer);
+		$user = $this->read($id);
+		$user['fanscount'] = intval($user['fanscount']) + $addCount;
+		$this->update($user);
 	}
 	
 	/**
 	 * Add fanscount by one
-	 * @param int $id
+	 * @parauserd
 	 */
 	public function addTDscore ($id, $addScore = 1)
 	{
-		$customer = $this->read($id);
-		$customer['TDscore'] = intval($customer['TDscore']) + $addScore;
-		$this->update($customer);
+		$user = $this->read($id);
+		$user['score'] = intval($user['score']) + $addScore;
+		$this->update($user);
 	}
 	
 	/**
 	 * Get blog list 
-	 * @param $customerId Customer ID
+	 * @param $userId user ID
 	 */
 	public function getListByPage ($pageId = 0)
 	{

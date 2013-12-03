@@ -7,7 +7,7 @@ define('__ETC', dirname(__FILE__));
 define('__ROOT', realpath(__ETC . '/../'));
 define('__LIB_DIR', realpath(__ROOT . '/lib'));
 define('__BIN_DIR', realpath(__ROOT . '/bin'));
-define('__WWW_DIR', realpath(__ROOT . '/www'));
+define('__WEBSITE_DIR', realpath(__ROOT . '/website'));
 define('__DAT_DIR', realpath(__ROOT . '/dat'));
 define('__DOC_DIR', realpath(__ROOT . '/doc'));
 define('__CACHE_DIR', realpath(__DAT_DIR . '/cache'));

@@ -38,50 +38,50 @@ class Core_Comment extends Demos_Dao_Core
 		$this->_bindTable($this->t1, $this->k1);
 	}
 	
-	/**
-	 * Get all blog comment list
-	 * @param int $blogId
-	 * @param int $pageId
-	 */
-	public function getListByBlog ($blogId, $pageId = 0)
-	{
-		$list = array();
-		$sql = $this->select()
-			->from($this->t1, '*')
-			->where("{$this->t1}.blogid = ?", $blogId)
-			->order("{$this->t1}.uptime desc")
-			->limitPage($pageId, 10);
+// 	/**
+// 	 * Get all blog comment list
+// 	 * @param int $blogId
+// 	 * @param int $pageId
+// 	 */
+// 	public function getListByBlog ($blogId, $pageId = 0)
+// 	{
+// 		$list = array();
+// 		$sql = $this->select()
+// 			->from($this->t1, '*')
+// 			->where("{$this->t1}.blogid = ?", $blogId)
+// 			->order("{$this->t1}.uptime desc")
+// 			->limitPage($pageId, 10);
 		
-		$res = $this->dbr()->fetchAll($sql);
-		if ($res) {
-			$customerDao = new Core_Customer();
-			foreach ($res as $row) {
-				$customer = $customerDao->read($row['customerid']);
-				$comment = array(
-					'id'		=> $row['id'],
-					'content'	=> '<b>'.$customer['name'].'</b> : '.$row['content'],
-					'uptime'	=> $row['uptime'],
-				);
-				array_push($list, $comment);
-			}
-		}
-		return $list;
-	}
+// 		$res = $this->dbr()->fetchAll($sql);
+// 		if ($res) {
+// 			$customerDao = new Core_Customer();
+// 			foreach ($res as $row) {
+// 				$customer = $customerDao->read($row['customerid']);
+// 				$comment = array(
+// 					'id'		=> $row['id'],
+// 					'content'	=> '<b>'.$customer['name'].'</b> : '.$row['content'],
+// 					'uptime'	=> $row['uptime'],
+// 				);
+// 				array_push($list, $comment);
+// 			}
+// 		}
+// 		return $list;
+// 	}
 	
-	/**
-	 * Get customer comment list 
-	 * @param string $customerId Customer ID
-	 * @param int $pageId
-	 */
-	public function getListByCustomer ($customerId, $pageId = 0)
-	{
-		$list = array();
-		$sql = $this->select()
-			->from($this->t1, '*')
-			->where("{$this->t1}.customerid = ?", $customerId)
-			->order("{$this->t1}.uptime desc")
-			->limitPage($pageId, 10);
+// 	/**
+// 	 * Get customer comment list 
+// 	 * @param string $customerId Customer ID
+// 	 * @param int $pageId
+// 	 */
+// 	public function getListByCustomer ($customerId, $pageId = 0)
+// 	{
+// 		$list = array();
+// 		$sql = $this->select()
+// 			->from($this->t1, '*')
+// 			->where("{$this->t1}.customerid = ?", $customerId)
+// 			->order("{$this->t1}.uptime desc")
+// 			->limitPage($pageId, 10);
 		
-		return $this->dbr()->fetchAll($sql);
-	}
+// 		return $this->dbr()->fetchAll($sql);
+// 	}
 }

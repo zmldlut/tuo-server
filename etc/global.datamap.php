@@ -1,34 +1,37 @@
 <?php 
-
 $_DataMap = array(
-	'Customer' => array(
+	'user' => array(
 		'id' => 'id',
 		'sid' => 'sid',
 		'name' => 'name',
 		'sign' => 'sign',
 		'face' => 'face',
+		'sex' => 'sex',
+		'birthday' => 'birthday',
+		'location' => 'location',
 		'faceurl' => 'faceurl',
-		'blogcount' => 'blogcount',
+		'eiocount' => 'eiocount',
 		'fanscount' => 'fanscount',
-		'uptime' => 'uptime',
-	),
-	'Blog' => array(
-		'id' => 'id',
-		'face' => 'face',
-		'author' => 'author',
-		'content' => 'content',
-		'comment' => 'comment',
-		'uptime' => 'uptime',
+		'score' => 'score',
 	),
 	'Comment' => array(
 		'id' => 'id',
+		'eioid' => 'eioid',
+		'userid' => 'userid',
 		'content' => 'content',
 		'uptime' => 'uptime',
 	),
-	'Image' => array(
+	'eio' => array(
 		'id' => 'id',
-		'url' => 'url',
-		'type' => 'type',
+		'type' =>'type',
+		'title' => 'title',
+		'author' => 'author',
+		'questioncount' => 'questioncount',
+		'levelA' => 'levelA',
+		'levelB' => 'levelB',
+		'levelC' => 'levelC',
+		'levelD' => 'levelD',
+		'uptime' => 'uptime',
 	),
 	'Notice' => array(
 		'id' => 'id',

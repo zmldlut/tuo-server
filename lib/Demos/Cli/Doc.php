@@ -24,7 +24,7 @@ class Demos_Cli_Doc extends Demos_Cli
 	}
 	
 	/**
-	 * Generate lib document to www/doc
+	 * Generate lib document to website/doc
 	 * @return void
 	 */
 	public function buildAction ()

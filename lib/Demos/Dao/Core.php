@@ -4,7 +4,7 @@
  *
  * @category   Demos
  * @package    Demos_Dao
- * @author     James.Huang <shagoo@gmail.com>
+ * @author     Minlei.Zhang <zml@mail.dlut.edu.cn>
  * @license    http://www.apache.org/licenses/LICENSE-2.0
  * @version    $Id$
  */
@@ -19,7 +19,7 @@ class Demos_Dao_Core extends Demos_Dao
 	/**
 	 * @static
 	 */
-	const DB_NAME = 'myserver_test';
+	const DB_NAME = 'eioapp';
 	
 	/**
 	 * Construct
