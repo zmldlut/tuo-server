@@ -1,30 +1,29 @@
 <?php 
 
 $_DataMap = array(
-	'Customer' => array(
+	
+	'Fans' => array(
 		'id' => 'id',
-		'sid' => 'sid',
 		'name' => 'name',
 		'sign' => 'sign',
 		'face' => 'face',
 		'faceurl' => 'faceurl',
-		'blogcount' => 'blogcount',
+		'sex' => 'sex',
+		'birthday' => 'birthday',
+		'location' => 'location',
+		'eiocount' => 'eiocount',
 		'fanscount' => 'fanscount',
-		'uptime' => 'uptime',
+		'score' => 'score',	 
 	),
-	'Blog' => array(
+	
+	'Microblog' => array(
 		'id' => 'id',
-		'face' => 'face',
-		'author' => 'author',
-		'content' => 'content',
-		'comment' => 'comment',
-		'uptime' => 'uptime',
-	),
-	'Comment' => array(
-		'id' => 'id',
+		'userid' => 'userid',
+		'name' => 'name',
 		'content' => 'content',
 		'uptime' => 'uptime',
 	),
+
 	'Image' => array(
 		'id' => 'id',
 		'url' => 'url',
@@ -32,7 +31,12 @@ $_DataMap = array(
 	),
 	'Notice' => array(
 		'id' => 'id',
-		'message' => 'message'
+		'fromuserid' => 'fromuserid',
+		'userid' => 'userid',
+		'content' => 'content',
+		'type' => 'type',
+		'status' => 'status',
+		'uptime' => 'uptime',
 	),
 );
 

@@ -47,11 +47,11 @@ class IndexServer extends Demos_App_Server
 	{
 		$this->doAuth();
 		
-		// get extra customer info
-		$customerDao = $this->dao->load('Core_Customer');
-		$customerItem = $customerDao->getById($this->customer['id']);
+		// get extra user info
+		$userDao = $this->dao->load('Core_User');
+		$userItem = $userDao->getById($this->user['id']);
 		$this->render('10000', 'Load index ok', array(
-			'Customer' => $customerItem
+			'user' => $userItem
 		));
 	}
 	
@@ -73,24 +73,24 @@ class IndexServer extends Demos_App_Server
 	 */
 	public function loginAction ()
 	{
-		// return login customer
+		// return login user
 		$name = $this->param('name');
 		$pass = $this->param('pass');
 		if ($name && $pass) {
-			$customerDao = $this->dao->load('Core_Customer');
-			$customer = $customerDao->doAuth($name, $pass);
-			if ($customer) {
-				$customer['sid'] = session_id();
-				$_SESSION['customer'] = $customer;
+			$userDao = $this->dao->load('Core_User');
+			$user = $userDao->doAuth($name, $pass);
+			if ($user) {
+				$user['sid'] = session_id();
+				$_SESSION['user'] = $user;
 				$this->render('10000', 'Login ok', array(
-					'Customer' => $customer
+					'user' => $user
 				));
 			}
 		}
 		// return sid only for client
-		$customer = array('sid' => session_id());
+		$user = array('sid' => session_id());
 		$this->render('14001', 'Login failed', array(
-			'Customer' => $customer
+			'user' => $user
 		));
 	}
 	
@@ -109,7 +109,7 @@ class IndexServer extends Demos_App_Server
 	 */
 	public function logoutAction ()
 	{
-		$_SESSION['customer'] = null;
+		$_SESSION['user'] = null;
 		$this->render('10000', 'Logout ok');
 	}
 }

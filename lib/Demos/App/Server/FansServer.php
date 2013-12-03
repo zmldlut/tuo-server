@@ -1,20 +1,10 @@
 <?php
-/**
- * Demos App
- *
- * @category   Demos
- * @package    Demos_App_Server
- * @author     James.Huang <huangjuanshi@163.com>
- * @license    http://www.apache.org/licenses/LICENSE-2.0
- * @version    $Id$
- */
-
 require_once 'Demos/App/Server.php';
 
 /**
  * @package Demos_App_Server
  */
-class TestServer extends Demos_App_Server
+class FansServer extends Demos_App_Server
 {
 	/**
 	 * ---------------------------------------------------------------------------------------------
@@ -30,22 +20,30 @@ class TestServer extends Demos_App_Server
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// service api methods
-	
 	/**
 	 * ---------------------------------------------------------------------------------------------
-	 * > 接口说明：测试接口
+	 * > 接口说明：获取好友列表 
 	 * <code>
-	 * URL地址：/test/index
-	 * 提交方式：POST
+	 * URL地址：/fans/fansList
+	 * 提交方式：GET
 	 * </code>
 	 * ---------------------------------------------------------------------------------------------
-	 * @title 测试接口
-	 * @action /test/index
+	 * @title 获取好友列表 
+	 * @action /fans/fansList
 	 * @method get
 	 */
-	public function indexAction ()
+	public function fansListAction ()
 	{
-		echo "My First Api";
+		$this -> doAuth();
+		
+		$relationDao = $this->dao->load('Core_Relationship');
+		$fanslist = $relationDao -> getFansList($this->user['id']);
+		if(!$fanslist){
+			$this ->render('15001','Get fans list failed');
+		}
+		$this->render('10000', 'Get fans list ok', array(
+				'Fans.list' => $fanslist
+		));
 	}
-
+	
 }

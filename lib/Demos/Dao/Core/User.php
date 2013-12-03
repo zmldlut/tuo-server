@@ -15,12 +15,12 @@ require_once 'Demos/Util/Image.php';
 /**
  * @package Demos_Dao_Core
  */
-class Core_Customer extends Demos_Dao_Core
+class Core_User extends Demos_Dao_Core
 {
 	/**
 	 * @static
 	 */
-	const TABLE_NAME = 'customer';
+	const TABLE_NAME = 'user';
 	
 	/**
 	 * @static
@@ -55,13 +55,22 @@ class Core_Customer extends Demos_Dao_Core
 	}
 	
 	/**
-	 * Get customer by id
+	 * Get user by id
 	 * @param int $id
 	 */
 	public function getById ($id) {
-		$customer = $this->read($id);
-		$customer['faceurl'] = Demos_Util_Image::getFaceUrl($customer['face']);
-		return $customer;
+		$user = $this->read($id);
+		$user['faceurl'] = Demos_Util_Image::getFaceUrl($user['face']);
+		return $user;
+	}
+	
+	/**
+	 * Get user name by id
+	 * @param int $id
+	 */
+	public function getNameById ($id) {
+		$user = $this->read($id);
+		return $user['name'];
 	}
 	
 	/**
@@ -70,9 +79,9 @@ class Core_Customer extends Demos_Dao_Core
 	 */
 	public function addEIOcount ($id, $addCount = 1)
 	{
-		$customer = $this->read($id);
-		$customer['EIOcount'] = $customer['EIOcount'] + $addCount;
-		$this->update($customer);
+		$user = $this->read($id);
+		$user['eiocount'] = $user['eiocount'] + $addCount;
+		$this->update($user);
 	}
 	
 	/**
@@ -81,33 +90,20 @@ class Core_Customer extends Demos_Dao_Core
 	 */
 	public function addFriendscount ($id, $addCount = 1)
 	{
-		$customer = $this->read($id);
-		$customer['friendscount'] = intval($customer['friendscount']) + $addCount;
-		$this->update($customer);
+		$user = $this->read($id);
+		$user['fanscount'] = intval($user['fanscount']) + $addCount;
+		$this->update($user);
 	}
 	
 	/**
 	 * Add fanscount by one
 	 * @param int $id
 	 */
-	public function addTDscore ($id, $addScore = 1)
+	public function addScore ($id, $addScore = 1)
 	{
-		$customer = $this->read($id);
-		$customer['TDscore'] = intval($customer['TDscore']) + $addScore;
-		$this->update($customer);
+		$user = $this->read($id);
+		$user['score'] = intval($user['score']) + $addScore;
+		$this->update($user);
 	}
 	
-	/**
-	 * Get blog list 
-	 * @param $customerId Customer ID
-	 */
-	public function getListByPage ($pageId = 0)
-	{
-		$list = array();
-		$sql = $this->select()
-			->from($this->t1, '*')
-			->order("{$this->t1}.uptime desc");
-		
-		return $this->dbr()->fetchAll($sql);
-	}
 }
