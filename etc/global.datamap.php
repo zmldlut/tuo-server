@@ -1,41 +1,41 @@
 <?php 
 $_DataMap = array(
-	'user' => array(
+	
+	'Fans' => array(
 		'id' => 'id',
-		'sid' => 'sid',
 		'name' => 'name',
 		'sign' => 'sign',
 		'face' => 'face',
+		'faceurl' => 'faceurl',
 		'sex' => 'sex',
 		'birthday' => 'birthday',
 		'location' => 'location',
-		'faceurl' => 'faceurl',
 		'eiocount' => 'eiocount',
 		'fanscount' => 'fanscount',
-		'score' => 'score',
+		'score' => 'score',	 
 	),
-	'Comment' => array(
+	
+	'Microblog' => array(
 		'id' => 'id',
-		'eioid' => 'eioid',
 		'userid' => 'userid',
+		'name' => 'name',
 		'content' => 'content',
 		'uptime' => 'uptime',
 	),
-	'eio' => array(
+
+	'Image' => array(
 		'id' => 'id',
-		'type' =>'type',
-		'title' => 'title',
-		'author' => 'author',
-		'questioncount' => 'questioncount',
-		'levelA' => 'levelA',
-		'levelB' => 'levelB',
-		'levelC' => 'levelC',
-		'levelD' => 'levelD',
-		'uptime' => 'uptime',
+		'url' => 'url',
+		'type' => 'type',
 	),
 	'Notice' => array(
 		'id' => 'id',
-		'message' => 'message'
+		'fromuserid' => 'fromuserid',
+		'userid' => 'userid',
+		'content' => 'content',
+		'type' => 'type',
+		'status' => 'status',
+		'uptime' => 'uptime',
 	),
 );
 

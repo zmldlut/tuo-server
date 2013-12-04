@@ -103,7 +103,7 @@ class Core_User extends Demos_Dao_Core
 	 * Add fanscount by one
 	 * @parauserd
 	 */
-	public function addTDscore ($id, $addScore = 1)
+	public function addscore ($id, $addScore = 1)
 	{
 		$user = $this->read($id);
 		$user['score'] = intval($user['score']) + $addScore;

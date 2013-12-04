@@ -11,6 +11,7 @@
 
 require_once 'Demos/Dao/Core.php';
 require_once 'Demos/Util/Image.php';
+require_once 'Demos/Dao/Core/User.php';
 
 /**
  * @package Demos_Dao_Core
@@ -36,36 +37,33 @@ class Core_Relationship extends Demos_Dao_Core
 		
 		$this->_bindTable($this->t1);
 	}
-	
 	/**
 	 * 获取好友列表
 	 *
 	 * @param string $userId
-	 * @return array 基本形式{id，name，score}
+	 * @return
 	 */
 	public function getFansList($userId)
 	{
 		$list = array();
 		$sql = $this->select()->from($this->t1, '*')
 		->where("userid = ?", $userId);
-		$res = $this->dbr()->fetchRow($sql);
+		$res = $this->dbr()->fetchAll($sql);
+	
 		if ($res)
 		{
-			$userDao = $this->dao->l();
+			$userDao = new Core_User();
 			foreach ($res as $row) {
-				$friend = array(
-						'id'		=> $row['fansid'],
-						'name'		=> $userDao->getNameById($row['fansid']),
-						'score'		=> $row['score'],
-				);
-				array_push($list, $friend);
+				$fans = $userDao->read($row['fansid']);
+				array_push($list, $fans);
 			}
 		}
+		$userid = $userDao->read($row['userid']);
+		array_push($list, $userid);
 		return $list;
 	}
-	
 	/**
-	 * 获取好友列表
+	 * 判断是否是好友关系
 	 *
 	 * @param string $userIdA 
 	 * @param string $userIdB 

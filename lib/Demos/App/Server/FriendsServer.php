@@ -30,7 +30,31 @@ class FriendsServer extends Demos_App_Server
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	// service api methods
+	/**
+	 * ---------------------------------------------------------------------------------------------
+	 * > 接口说明：获取好友列表
+	 * <code>
+	 * URL地址：/Friends/fansList
+	 * 提交方式：GET
+	 * </code>
+	 * ---------------------------------------------------------------------------------------------
+	 * @title 获取好友列表
+	 * @action /Friends/fansList
+	 * @method get
+	 */
+	public function fansListAction ()
+	{
+		$this -> doAuth();
 	
+		$relationDao = $this->dao->load('Core_Relationship');
+		$fanslist = $relationDao -> getFansList($this->user['id']);
+		if(!$fanslist){
+			$this ->render('15001','Get fans list failed');
+		}
+		$this->render('10000', 'Get fans list ok', array(
+				'Fans.list' => $fanslist
+		));
+	}
 	/**
 	 * ---------------------------------------------------------------------------------------------
 	 * > 接口说明：搜索好友接口

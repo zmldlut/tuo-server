@@ -161,4 +161,42 @@ class IndexServer extends Demos_App_Server
 // 		));
 		$this->render('10000', 'Create comment ok');
 	}	
+	
+	/**
+	 * ---------------------------------------------------------------------------------------------
+	 * > 接口说明：更新用户信息接口
+	 * <code>
+	 * URL地址：/index/update
+	 * 提交方式：POST
+	 * </code>
+	 * ---------------------------------------------------------------------------------------------
+	 * @title 更新用户信息接口
+	 * @action /index/update
+	 * @method post
+	 */
+	public function updateAction ()
+	{
+		// return 注册成功
+		$registeruser = $this->param('user');
+		$user = $this->dao->load('Core_User');
+	
+		//判断账号是否存在
+		if(!$user->getByName($registeruser['name'])){
+			$this->render('10009', 'This account is not exists!');
+		}
+		$user->update(array(
+				'id' => $registeruser['id'],
+				'name' => $registeruser['name'],
+				'pass' => $registeruser['pass'],
+				'sign' => $registeruser['sign'],
+				'face' => $registeruser['face'],
+				'sex' => $registeruser['sex'],
+				'birthday' => $registeruser['birthday'],
+				'location' => $registeruser['location'],
+				'eiocount' => $registeruser['eiocount'],
+				'fanscount' => $registeruser['fanscount'],
+				'score' => $registeruser['score'],
+		));
+		$this->render('10000', '个人信息更新成功！');
+	}
 }
