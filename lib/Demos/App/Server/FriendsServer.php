@@ -45,7 +45,6 @@ class FriendsServer extends Demos_App_Server
 	public function fansListAction ()
 	{
 		$this -> doAuth();
-	
 		$relationDao = $this->dao->load('Core_Relationship');
 		$fanslist = $relationDao -> getFansList($this->user['id']);
 		if(!$fanslist){

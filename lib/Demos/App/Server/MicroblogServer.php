@@ -34,7 +34,6 @@ class MicroblogServer extends Demos_App_Server
 	 * ---------------------------------------------------------------------------------------------
 	 * @title 好友说说列表接口
 	 * @action /microblog/blogList
-	 * @params userId 0 INT
 	 * @params pageId 0 INT
 
 	 * @method get
@@ -43,7 +42,6 @@ class MicroblogServer extends Demos_App_Server
 	{
 		$this->doAuth();
 	
-		$userId = intval($this->param('userId'));
 		$pageId = intval($this->param('pageId'));
 		$blogList = array();
 		$blogDao = $this->dao->load('Core_Microblog');
