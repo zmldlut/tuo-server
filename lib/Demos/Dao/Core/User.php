@@ -65,6 +65,17 @@ class Core_User extends Demos_Dao_Core
 	}
 	
 	/**
+	 * 
+	 * @param int $id
+	 * @return string
+	 */
+	public function getNameById($id){
+		$user = $this->read($id);
+		return $user['name'];
+	}
+	
+	
+	/**
 	 * Get user by name
 	 * @param int $name
 	 */

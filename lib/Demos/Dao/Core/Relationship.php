@@ -11,7 +11,6 @@
 
 require_once 'Demos/Dao/Core.php';
 require_once 'Demos/Util/Image.php';
-require_once 'Demos/Dao/Core/User.php';
 
 /**
  * @package Demos_Dao_Core
@@ -52,7 +51,7 @@ class Core_Relationship extends Demos_Dao_Core
 	
 		if ($res)
 		{
-			$userDao = new Core_User();
+			$userDao = $this->load('Core_User');
 			foreach ($res as $row) {
 				$fans = $userDao->read($row['fansid']);
 				array_push($list, $fans);

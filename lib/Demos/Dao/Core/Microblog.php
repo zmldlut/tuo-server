@@ -54,7 +54,7 @@ class Core_Microblog extends Demos_Dao_Core
 	
 		$res = $this->dbr()->fetchAll($sql);
 		if ($res) {
-			$userDao = new Core_User();
+			$userDao = $this->load("Core_User");
 			foreach ($res as $row) {
 				$blog = array(
 						'id'		=> $row['id'],
@@ -77,7 +77,7 @@ class Core_Microblog extends Demos_Dao_Core
 	public function getFansListByUser($userId,$pageId=0)
 	{
 		$list = array();
-		$relationDao = new Core_Relationship();
+		$relationDao = $this->load("Core_Relationship");
 		$fansArr = $relationDao -> getFansList($userId);
 	
 		if(!$fansArr)
@@ -102,7 +102,7 @@ class Core_Microblog extends Demos_Dao_Core
 	
 		$res = $this->dbr()->fetchAll($sql);
 		if ($res) {
-			$userDao = new Core_User();
+			$userDao = $this->load("Core_User");
 			foreach ($res as $row) {
 				$blog = array(
 						'id'		=> $row['id'],
