@@ -15,6 +15,4 @@ $app->setDebug(true);
 $app->run(array(
 	'defaultClassSuffix' => 'Server'
 	//hello world zmldlut
-	
-		
 ));
