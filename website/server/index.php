@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?php
 require_once '../../etc/app.config.php';
 require_once 'Demos/App.php';
