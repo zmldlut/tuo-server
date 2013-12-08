@@ -43,7 +43,7 @@ class Core_Eio extends Demos_Dao_Core
 	 * @param int $pageId
 	 * @return array $list
 	 */
-	public function getListByClassify($classifyId,$pageId)
+	public function getListByClassify($classifyId,$pageId=0)
 	{
 		if($classifyId==1){ // 1为热门问卷
 			return $this->getHotList($pageId);
@@ -65,7 +65,7 @@ class Core_Eio extends Demos_Dao_Core
 	 * @param int $pageId
 	 * @return array $list
 	 */
-	public function getHotList($pageId)
+	public function getHotList($pageId=0)
 	{
 		$list = array();
 		$sql = $this->select()
@@ -82,7 +82,7 @@ class Core_Eio extends Demos_Dao_Core
 	 * @param int $pageId
 	 * @return array $list
 	 */
-	public function searchList($name,$pageId)
+	public function searchList($name,$pageId=0)
 	{
 		$list = array();
 		$name = "%$name%";
@@ -94,6 +94,32 @@ class Core_Eio extends Demos_Dao_Core
 		
 		$list = $this->dbr()->fetchAll($sql);
 		return $list;
+	}
+	
+	/**
+	 * 获取问卷的问题类型
+	 * @param unknown $eioId
+	 * @return string name
+	 */
+	public function getTypeName($eioId)
+	{
+		$eio = $this->read($eioId);
+		$eiotypeDao = $this->load('Core_Eiotype');
+		$name = $eiotypeDao->getName($eio['typeid']);
+		return $name;
+	}
+	
+	
+	public function praiseEio($id){
+		$eio = $this->read($id);
+		$eio['praisecount'] = intval($eio['praisecount']) + 1;
+		$this->update($eio);
+	}
+	
+	public function stampEio($id){
+		$eio = $this->read($id);
+		$eio['stampcount'] = intval($eio['stampcount']) + 1;
+		$this->update($eio);
 	}
 	
 }

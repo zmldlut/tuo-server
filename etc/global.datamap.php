@@ -60,7 +60,36 @@ $_DataMap = array(
 		'stampcount' => 'stampcount',
 		'publishtime' => 'publishtime',
 		'uptime' => 'uptime',
-	)
+	),
+		
+	// 问卷问题的类型，对应了eiotype表
+	'SimpleSelectQuestion' =>array( // 单项选择
+		'id'=>'id',
+		'eioid'=>'eioid',
+		'question'=>'question',
+		'answerA'=>'answerA',
+		'answerB'=>'answerB',
+		'answerC'=>'answerC',
+		'answerD'=>'answerD',
+		'trueanswer'=>'trueanswer',
+	),
+	'InputQuestion' =>array( 		// 填空
+		'id'=>'id',
+		'eioid'=>'eioid',
+		'question'=>'question',
+		'answerA'=>'answer',
+	),
+	'MultiSelectQuestion' =>array( // 多项选择
+		'id'=>'id',
+		'eioid'=>'eioid',
+		'question'=>'question',
+		'answerA'=>'answerA',
+		'answerB'=>'answerB',
+		'answerC'=>'answerC',
+		'answerD'=>'answerD',
+		'answerE'=>'answerE',
+	),
+	
 );
 
 function M ($model, $data)

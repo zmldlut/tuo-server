@@ -143,7 +143,7 @@ class MicroblogServer extends Demos_App_Server
 		$userDao = $this->dao->load('Core_User');
 		$userDao -> addScore($this->user['id'] , 1);
 		$userDao -> addScore($stamponId , -1);
-		
+		/* 
 		// 发表说说
 		$blogDao = $this->dao->load('Core_Microblog');
 		$content = $this->user['name']." 刚刚踩了 ".$userDao->getNameById($stamponId)." 一脚，成功偷得1积分";
@@ -151,9 +151,16 @@ class MicroblogServer extends Demos_App_Server
 				'userid'	=> $this->user['id'],
 				'content'	=> $content
 		));
+		 */
 		
 		// 推送通知
-		
+		$noticeDao = $this->dao->load('Core_Notice');
+		$noticeDao->create(
+			array(
+				'fromuserid'=> $this->user['id'],
+				'userid' => $stamponId,
+				'content' => $this->user['name']." 刚刚踩了你一脚，成功偷得1积分！"
+		));
 		
 		$this->render('10000','stamp friends ok',$content);
 	}

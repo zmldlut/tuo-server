@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: 127.0.0.1
--- 生成日期: 2013 年 12 月 08 日 06:11
+-- 生成日期: 2013 年 12 月 08 日 08:21
 -- 服务器版本: 5.5.32
 -- PHP 版本: 5.4.19
 
@@ -40,27 +40,12 @@ CREATE TABLE IF NOT EXISTS `admin` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `comment`
---
-
-CREATE TABLE IF NOT EXISTS `comment` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `eioid` int(11) NOT NULL COMMENT '问卷外键',
-  `userid` int(11) NOT NULL COMMENT '用户外键',
-  `content` text NOT NULL,
-  `uptime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户对于问卷的评论' AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
 -- 表的结构 `eio`
 --
 
 CREATE TABLE IF NOT EXISTS `eio` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `typeid` int(11) NOT NULL DEFAULT '1',
+  `typeid` int(11) NOT NULL DEFAULT '1' COMMENT '问卷问题类型，默认为选择题',
   `classifyid` int(11) NOT NULL,
   `icon` varchar(100) NOT NULL,
   `title` varchar(100) NOT NULL,
@@ -83,8 +68,8 @@ CREATE TABLE IF NOT EXISTS `eio` (
 --
 
 INSERT INTO `eio` (`id`, `typeid`, `classifyid`, `icon`, `title`, `author`, `questioncount`, `levelA`, `levelB`, `levelC`, `levelD`, `didcount`, `praisecount`, `stampcount`, `publishtime`, `uptime`) VALUES
-(1, 1, 1, '', 'test1', 'linwei', 0, '1', '2', '3', '4', 0, 0, 0, '2013-12-08 12:54:07', '2013-12-08 04:54:07'),
-(2, 1, 2, '', 'test2', '1', 0, '1', '2', '3', '4', 0, 0, 0, NULL, '2013-12-08 04:35:09');
+(1, 1, 1, '', 'test1', 'linwei', 0, '1', '2', '3', '4', 0, 1, 2, '2013-12-08 12:54:07', '2013-12-08 04:54:07'),
+(2, 1, 2, '', 'test2', '1', 0, '1', '2', '3', '4', 0, 0, 2, NULL, '2013-12-08 04:35:09');
 
 -- --------------------------------------------------------
 
@@ -114,6 +99,28 @@ INSERT INTO `eioclassify` (`id`, `name`, `icon`, `uptime`) VALUES
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `eiocomment`
+--
+
+CREATE TABLE IF NOT EXISTS `eiocomment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `eioid` int(11) NOT NULL COMMENT '问卷外键',
+  `userid` int(11) NOT NULL COMMENT '用户外键',
+  `content` text NOT NULL,
+  `uptime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户对于问卷的评论' AUTO_INCREMENT=2 ;
+
+--
+-- 转存表中的数据 `eiocomment`
+--
+
+INSERT INTO `eiocomment` (`id`, `eioid`, `userid`, `content`, `uptime`) VALUES
+(1, 1, 1, 'henhao', '2013-12-08 06:46:07');
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `eiocontent`
 --
 
@@ -125,9 +132,18 @@ CREATE TABLE IF NOT EXISTS `eiocontent` (
   `answerB` text NOT NULL,
   `answerC` text NOT NULL,
   `answerD` text NOT NULL,
+  `answerE` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `trueanswer` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='问卷的内容，即问题' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='问卷的内容，即问题' AUTO_INCREMENT=3 ;
+
+--
+-- 转存表中的数据 `eiocontent`
+--
+
+INSERT INTO `eiocontent` (`id`, `eioid`, `qustion`, `answerA`, `answerB`, `answerC`, `answerD`, `answerE`, `trueanswer`) VALUES
+(1, 1, 'how old are you', '10-20', '20-30', '30-40', '40-50', '', '2'),
+(2, 1, 'you name', 'asda', 'sdf', 'fasfasdf', 'asdf', '', '1');
 
 -- --------------------------------------------------------
 
@@ -169,7 +185,16 @@ CREATE TABLE IF NOT EXISTS `eiotype` (
   `typename` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `uptime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+
+--
+-- 转存表中的数据 `eiotype`
+--
+
+INSERT INTO `eiotype` (`id`, `typename`, `uptime`) VALUES
+(1, 'SimpleSelectQuestion', '2013-12-08 06:07:03'),
+(2, 'InputQuestion', '2013-12-08 06:07:03'),
+(3, 'MultiSelectQuestion', '2013-12-08 06:07:11');
 
 -- --------------------------------------------------------
 
@@ -220,7 +245,14 @@ CREATE TABLE IF NOT EXISTS `notice` (
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0为未读，1为已读',
   `uptime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户通知表' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户通知表' AUTO_INCREMENT=2 ;
+
+--
+-- 转存表中的数据 `notice`
+--
+
+INSERT INTO `notice` (`id`, `fromuserid`, `userid`, `content`, `type`, `status`, `uptime`) VALUES
+(1, 1, 2, 'james 刚刚踩了你一脚，成功偷得1积分！', 1, 0, '2013-12-08 07:18:47');
 
 -- --------------------------------------------------------
 
@@ -287,8 +319,8 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`id`, `name`, `pass`, `sign`, `face`, `sex`, `birthday`, `location`, `eiocount`, `fanscount`, `score`, `uptime`) VALUES
-(1, 'james', 'james', '', '', 1, '0000-00-00', '', 0, 0, 10, '2013-12-03 11:57:13'),
-(2, 'linwei', 'linwei', '', '', 1, '0000-00-00', '', 0, 0, -5, '2013-12-03 12:01:12'),
+(1, 'james', 'james', '', '', 1, '0000-00-00', '', 0, 0, 11, '2013-12-03 11:57:13'),
+(2, 'linwei', 'linwei', '', '', 1, '0000-00-00', '', 0, 0, -6, '2013-12-03 12:01:12'),
 (3, 'linda', 'linda', '', '', 1, '0000-00-00', '', 0, 0, 0, '2013-12-03 12:43:59');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

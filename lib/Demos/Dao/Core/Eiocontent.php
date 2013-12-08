@@ -36,4 +36,21 @@ class Core_Eiocontent extends Demos_Dao_Core
 		$this->k1 = self::TABLE_PRIM;
 		$this->_bindTable($this->t1, $this->k1);
 	}
+	
+	/**
+	 * 获取问题列表
+	 * @param int $eioId
+	 * @param int $pageId
+	 * @return array $list
+	 */
+	public function getContent($eioId,$pageId=0)
+	{
+		$list = array();
+		$sql = $this->select()
+		->from($this->t1, '*')
+		->where("{$this->t1}.eioid =?", $eioId)
+		->limitPage($pageId, 10);
+		$list = $this->dbr()->fetchAll($sql);
+		return $list;
+	}
 }

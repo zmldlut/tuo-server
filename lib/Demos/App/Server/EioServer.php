@@ -127,18 +127,128 @@ class EioServer extends Demos_App_Server
 	 * <code>
 	 * URL地址：/eio/quesList
 	 * 提交方式：GET
-	 * 参数#1：EIOId，类型：INT，必须：YES
+	 * 参数#1：eioId，类型：INT，必须：YES
 	 * 参数#2：pageId，类型：INT，必须：YES
 	 * </code>
 	 * ---------------------------------------------------------------------------------------------
 	 * @title 获取问题列表接口
 	 * @action /eio/quesList
-	 * @params EIOId  1 INT
+	 * @params eioId  1 INT
 	 * @params pageId 0 INT
 	 * @method get
 	 */
 	public function quesListAction ()
 	{
+		$this->doAuth();
+		
+		$eioId = $this->param('eioId');
+		$pageId = intval($this->param('pageId'));
+		
+		$eioContentDao = $this->dao->load('Core_Eiocontent');
+		$quesList = $eioContentDao->getContent($eioId,$pageId);
+		if ($quesList) {
+			$eioDao = $this->dao->load('Core_Eio');
+			$typeName = $eioDao->getTypeName($eioId);  // 问题类型，单选、填空或、多选
+			$this->render('10000', 'Get eio content list ok', array(
+					"$typeName.list" => $quesList
+			));
+		}
+		$this->render('14012', 'Get eio content list failed');
+	}
+	
+	/**
+	 * ---------------------------------------------------------------------------------------------
+	 * > 接口说明：提交问题结果，返回处理数据
+	 * <code>
+	 * URL地址：/eio/dispose
+	 * 提交方式：POST
+	 * 参数#1：eioId，类型：INT，必须：YES
+	 * 参数#2：pageId，类型：INT，必须：YES
+	 * </code>
+	 * ---------------------------------------------------------------------------------------------
+	 * @title 提交问题结果，返回处理数据
+	 * @action /eio/dispose
+	 * @params eioId  1 INT
+	 * @params pageId 0 INT
+	 * @method post
+	 */
+	public function disposeAction ()
+	{
+		$this->doAuth();
+		// TODO add dispse method
 		
 	}
+	
+	/**
+	 * ---------------------------------------------------------------------------------------------
+	 * > 接口说明：评论问卷接口
+	 * <code>
+	 * URL地址：/eio/comment
+	 * 提交方式：post
+	 * 参数#1：eioId，类型：INT，必须：YES
+	 * 参数#2：cotent，类型：string，必须：YES
+	 * </code>
+	 * ---------------------------------------------------------------------------------------------
+	 * @title 评论问卷接口
+	 * @action /eio/comment
+	 * @params eioId  1 INT
+	 * @params cotent '' string
+	 * @method post
+	 */
+	public function commentAction ()
+	{
+		$this->doAuth();
+		$eioId = $this->param('eioId');
+		$content = $this->param('cotent');
+		$eiocommentDao = $this->dao->load('Core_Eiocomment');
+		$eiocommentDao->addComment(
+				$eioId,$this->user['id'],$content);
+		$this->render('10000','Comment ok');
+	}
+	
+	/**
+	 * ---------------------------------------------------------------------------------------------
+	 * > 接口说明：踩一踩问卷接口
+	 * <code>
+	 * URL地址：/eio/stamp
+	 * 提交方式：post
+	 * 参数#1：eioId，类型：INT，必须：YES
+	 * </code>
+	 * ---------------------------------------------------------------------------------------------
+	 * @title 踩一踩问卷接口
+	 * @action /eio/stamp
+	 * @params eioId 1 INT
+	 * @method post
+	 */
+	public function stampAction ()
+	{
+		$this->doAuth();
+		$eioDao = $this->dao->load('Core_Eio');
+		$eioDao -> stampEio($this->param('eioId'));
+		$this->render('10000','Stamp eio ok');
+		
+	}
+	
+	/**
+	 * ---------------------------------------------------------------------------------------------
+	 * > 接口说明：赞一赞问卷接口
+	 * <code>
+	 * URL地址：/eio/praise
+	 * 提交方式：post
+	 * 参数#1：eioId，类型：INT，必须：YES
+	 * </code>
+	 * ---------------------------------------------------------------------------------------------
+	 * @title 赞一赞问卷接口
+	 * @action /eio/praise
+	 * @params eioId 1 INT
+	 * @method post
+	 */
+	public function praiseAction ()
+	{
+		$this->doAuth();
+		$eioDao = $this->dao->load('Core_Eio');
+		$eioDao -> praiseEio($this->param('eioId'));
+		$this->render('10000','Praise eio ok');
+	}
+	
 }
