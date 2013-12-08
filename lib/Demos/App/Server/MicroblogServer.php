@@ -24,18 +24,16 @@ class MicroblogServer extends Demos_App_Server
 	// service api methods
 	/**
 	 * ---------------------------------------------------------------------------------------------
-	 * > 接口说明：获取好友说说列表 （包括自己的和好友的）
+	 * > 接口说明：获取好友说说列表 
 	 * <code>
 	 * URL地址：/Microblog/blogList
 	 * 提交方式：GET
-	 * 参数#1：typeId，类型：INT，必须：YES
-	 * 参数#2：pageId，类型：INT，必须：YES
+	 * 参数#1：pageId，类型：INT，必须：YES
 	 * </code>
 	 * ---------------------------------------------------------------------------------------------
 	 * @title 好友说说列表接口
 	 * @action /microblog/blogList
 	 * @params pageId 0 INT
-
 	 * @method get
 	 */
 	public function blogListAction ()
@@ -57,11 +55,11 @@ class MicroblogServer extends Demos_App_Server
 	
 	/**
 	 * ---------------------------------------------------------------------------------------------
-	 * > 接口说明：获取用户说说列表 （包括自己或好友的）
+	 * > 接口说明：获取用户说说列表
 	 * <code>
 	 * URL地址：/Microblog/userBlogList
 	 * 提交方式：GET
-	 * 参数#1：typeId，类型：INT，必须：YES
+	 * 参数#1：userId，类型：INT，必须：YES
 	 * 参数#2：pageId，类型：INT，必须：YES
 	 * </code>
 	 * ---------------------------------------------------------------------------------------------

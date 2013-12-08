@@ -37,6 +37,30 @@ $_DataMap = array(
 		'status' => 'status',
 		'uptime' => 'uptime',
 	),
+	'Classify' =>array(
+		'id' =>'id',
+		'name' =>'name',
+		'icon' =>'icon',
+		'uptime'=>'time',
+	),
+	'Eio' =>array(
+		'id' => 'id',
+		'typeid' =>'typeid',
+		'classifyid' =>'classifyid',
+		'icon' => 'icon',
+		'title' => 'title',
+		'author' => 'author',
+		'questioncount' => 'questioncount ',
+		'levelA' => 'levelA',
+		'levelB' => 'levelB',
+		'levelC' => 'levelC',
+		'levelD' => 'levelD',
+		'didcount' => 'didcount',
+		'praisecount' => 'praisecount',
+		'stampcount' => 'stampcount',
+		'publishtime' => 'publishtime',
+		'uptime' => 'uptime',
+	)
 );
 
 function M ($model, $data)
