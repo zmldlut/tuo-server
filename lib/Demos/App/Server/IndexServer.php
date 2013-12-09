@@ -74,24 +74,27 @@ class IndexServer extends Demos_App_Server
 	public function loginAction ()
 	{
 		// return login user
-		$name = $this->param('name');
-		$pass = $this->param('pass');
-		if ($name && $pass) {
-			$userDao = $this->dao->load('Core_User');
-			$user = $userDao->doAuth($name, $pass);
-			if ($user) {
-				$user['sid'] = session_id();
-				$_SESSION['user'] = $user;
-				$this->render('10000', 'Login ok', array(
-					'User' => $user
-				));
+		try {
+			$name = $this->param('name');
+			$pass = $this->param('pass');
+			if ($name && $pass) {
+				$userDao = $this->dao->load('Core_User');
+				$user = $userDao->doAuth($name, $pass);
+				if ($user) {
+					$user['sid'] = session_id();
+					$_SESSION['user'] = $user;
+					$this->render('10000', 'Login ok', array(
+							'User' => $user
+					));
+				}
 			}
-		}
-		// return sid only for client
-		$user = array('sid' => session_id());
-		$this->render('14001', 'Login failed', array(
-			'User' => $user
-		));
+			// return sid only for client
+			$user = array('sid' => session_id());
+		} catch (Exception $e) {
+			$this->render('14001', 'Login failed! error:'.$e->getMessage(), array(
+					'User' => $user
+			));
+		}	
 	}
 	
 	/**
@@ -109,8 +112,12 @@ class IndexServer extends Demos_App_Server
 	 */
 	public function logoutAction ()
 	{
-		$_SESSION['user'] = null;
-		$this->render('10000', 'Logout ok');
+		try {
+			$_SESSION['user'] = null;
+			$this->render('10000', 'Logout ok');
+		} catch (Exception $e) {
+			$this->render('14001', 'Logout failed! error:'.$e->getMessage());
+		}
 	}
 	
 	/**
@@ -127,39 +134,44 @@ class IndexServer extends Demos_App_Server
 	 */
 	public function registerAction ()
 	{
-		// return 注册成功
-		$registeruser = $this->param('user');
-		$user = $this->dao->load('Core_User');
-		
-		//判断账号是否存在
-		if($user->getByName($registeruser['name'])){
-			$this->render('10009', 'This name already exists!');
+		try {
+			// return 注册成功
+			$registeruser = $this->param('user');
+			$user = $this->dao->load('Core_User');
+			
+			//判断账号是否存在
+			if($user->getByName($registeruser['name'])){
+				$this->render('10009', 'This name already exists!');
+			}
+			$user->create(array(
+					'name' => $registeruser['name'],
+					'pass' => $registeruser['pass'],
+					'sign' => $registeruser['sign'],
+					'face' => $registeruser['face'],
+					'sex' => $registeruser['sex'],
+					'birthday' => $registeruser['birthday'],
+					'location' => $registeruser['location'],
+					'eiocount' => $registeruser['eiocount'],
+					'fanscount' => $registeruser['fanscount'],
+					'score' => $registeruser['score'],
+			));
+			// 		$user->create(array(
+			// 				'name' => 'zml',
+			// 				'pass' => 'zml',
+			// 				'sign' => 'Happying',
+			// 				'face' => '0',
+			// 				'sex' => 0,
+			// 				'birthday' => '2013-1-1',
+			// 				'location' => 'henan',
+			// 				'eiocount' => 0,
+			// 				'fanscount' => 0,
+			// 				'score' => 0,
+			// 		));
+			$this->render('10000', 'Register ok');
+		} catch (Exception $e) {
+			$this->render('14001', 'Register failed! error:'.$e->getMessage());
 		}
-		$user->create(array(
-				'name' => $registeruser['name'],
-		        'pass' => $registeruser['pass'],
-				'sign' => $registeruser['sign'],
-				'face' => $registeruser['face'],
-				'sex' => $registeruser['sex'],
-				'birthday' => $registeruser['birthday'],
-				'location' => $registeruser['location'],
-				'eiocount' => $registeruser['eiocount'],
-				'fanscount' => $registeruser['fanscount'],
-				'score' => $registeruser['score'],
-		));
-// 		$user->create(array(
-// 				'name' => 'zml',
-// 				'pass' => 'zml',
-// 				'sign' => 'Happying',
-// 				'face' => '0',
-// 				'sex' => 0,
-// 				'birthday' => '2013-1-1',
-// 				'location' => 'henan',
-// 				'eiocount' => 0,
-// 				'fanscount' => 0,
-// 				'score' => 0,
-// 		));
-		$this->render('10000', 'Create comment ok');
+
 	}	
 	
 	/**
@@ -176,27 +188,33 @@ class IndexServer extends Demos_App_Server
 	 */
 	public function updateAction ()
 	{
-		// return 注册成功
-		$registeruser = $this->param('user');
-		$user = $this->dao->load('Core_User');
-	
-		//判断账号是否存在
-		if(!$user->getByName($registeruser['name'])){
-			$this->render('10009', 'This account is not exists!');
+		$this->doAuth();
+
+		try {
+			$registeruser = $this->param('user');
+			$user = $this->dao->load('Core_User');
+			
+			//判断账号是否存在
+			if(!$user->getByName($registeruser['name'])){
+				$this->render('10009', 'This account is not exists!');
+			}
+			$user->update(array(
+					'id' => $registeruser['id'],
+					'name' => $registeruser['name'],
+					'pass' => $registeruser['pass'],
+					'sign' => $registeruser['sign'],
+					'face' => $registeruser['face'],
+					'sex' => $registeruser['sex'],
+					'birthday' => $registeruser['birthday'],
+					'location' => $registeruser['location'],
+					'eiocount' => $registeruser['eiocount'],
+					'fanscount' => $registeruser['fanscount'],
+					'score' => $registeruser['score'],
+			));
+			$this->render('10000', '个人信息更新成功！');
+		} catch (Exception $e) {
+			$this->render('14001', '个人信息更新失败！error:'.$e->getMessage());
 		}
-		$user->update(array(
-				'id' => $registeruser['id'],
-				'name' => $registeruser['name'],
-				'pass' => $registeruser['pass'],
-				'sign' => $registeruser['sign'],
-				'face' => $registeruser['face'],
-				'sex' => $registeruser['sex'],
-				'birthday' => $registeruser['birthday'],
-				'location' => $registeruser['location'],
-				'eiocount' => $registeruser['eiocount'],
-				'fanscount' => $registeruser['fanscount'],
-				'score' => $registeruser['score'],
-		));
-		$this->render('10000', '个人信息更新成功！');
+
 	}
 }

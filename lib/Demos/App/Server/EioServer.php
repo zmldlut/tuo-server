@@ -203,6 +203,10 @@ class EioServer extends Demos_App_Server
 		$eiocommentDao = $this->dao->load('Core_Eiocomment');
 		$eiocommentDao->addComment(
 				$eioId,$this->user['id'],$content);
+		
+		$microBlogDao = $this->dao->load("Core_MicroBlog");
+		$microBlogDao->addMicroBlog($this->user['id'], $content);
+		
 		$this->render('10000','Comment ok');
 	}
 	
@@ -223,10 +227,18 @@ class EioServer extends Demos_App_Server
 	public function stampAction ()
 	{
 		$this->doAuth();
-		$eioDao = $this->dao->load('Core_Eio');
-		$eioDao -> stampEio($this->param('eioId'));
-		$this->render('10000','Stamp eio ok');
+		$eioId = $this->param('eioId');
 		
+		$eioDao = $this->dao->load('Core_Eio');
+		$eio = $eioDao->getEio($eioId);
+		
+		$eioDao -> stampEio($eioId);
+		
+		$content = $this->user['name']." 踩了".$eio['title']."调查问卷";
+		$microBlogDao = $this->dao->load("Core_MicroBlog");
+		$microBlogDao->addMicroBlog($this->user['id'], $content);
+		
+		$this->render('10000','Stamp eio ok');
 	}
 	
 	/**
@@ -246,8 +258,13 @@ class EioServer extends Demos_App_Server
 	public function praiseAction ()
 	{
 		$this->doAuth();
+		$eioId = $this->param('eioId');
 		$eioDao = $this->dao->load('Core_Eio');
-		$eioDao -> praiseEio($this->param('eioId'));
+		$eioDao -> praiseEio($eioId);
+		$eio = $eioDao->getEio($eioId);
+		$content = $this->user['name']." 赞了".$eio['title']."调查问卷！";
+		$microBlogDao = $this->dao->load("Core_MicroBlog");
+		$microBlogDao->addMicroBlog($this->user['id'], $content);
 		$this->render('10000','Praise eio ok');
 	}
 	

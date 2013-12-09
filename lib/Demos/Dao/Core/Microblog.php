@@ -38,9 +38,25 @@ class Core_Microblog extends Demos_Dao_Core
 	}
 	
 	/**
+	 * 添加一条说说
+	 *
+	 * @param int $userId
+	 * @param String $content
+	 */
+	public function addMicroBlog($userId, $content)
+	{
+ 		$microBlogDao = $this->load("Core_MicroBlog");
+		$microBlogDao->create(array(
+				'userid' => $userId,
+				'content' => $content,
+		));
+	}
+	
+	
+	/**
 	 * 获取$userId用户自己的说说列表
 	 *
-	 * @param string $userId
+	 * @param int $userId
 	 * @param int $pageId
 	 */
 	public function getOwnListByUser($userId,$pageId=0)

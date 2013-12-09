@@ -109,6 +109,17 @@ class Core_Eio extends Demos_Dao_Core
 		return $name;
 	}
 	
+	/**
+	 * 获取问卷
+	 * @param unknown $eioId
+	 * @return array eio
+	 */
+	public function getEio($eioId)
+	{
+		$eio = $this->read($eioId);
+		return $eio;
+	}
+	
 	
 	public function praiseEio($id){
 		$eio = $this->read($id);
