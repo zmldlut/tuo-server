@@ -39,17 +39,19 @@ class MicroblogServer extends Demos_App_Server
 	public function blogListAction ()
 	{
 		$this->doAuth();
-	
-		$pageId = intval($this->param('pageId'));
-		$blogList = array();
-		$blogDao = $this->dao->load('Core_Microblog');
-		$blogList = $blogDao->getFansListByUser($this->user['id'], $pageId);
-		if ($blogList) {
-			$this->render('10000', 'Get blog list ok', array(
-					'Microblog.list' => $blogList
-			));
-		}
-		$this->render('14008', 'Get blog list failed');
+		try {
+			$pageId = intval($this->param('pageId'));
+			$blogDao = $this->dao->load('Core_Microblog');
+			$blogList = $blogDao->getFansListByUser($this->user['id'], $pageId);
+			
+			if ($blogList) {
+				$this->render('10000', 'Get blog list ok', array(
+						'Microblog.list' => $blogList
+				));
+			}
+		} catch (Exception $e) {
+			$this->render('14008', 'Get blog list failed! Error: '.$e->getMessage());
+		}	
 	}
 	
 	
@@ -73,19 +75,20 @@ class MicroblogServer extends Demos_App_Server
 	public function userBlogListAction ()
 	{
 		$this->doAuth();
-	
-		$userId = intval($this->param('userId'));
-		$pageId = intval($this->param('pageId'));
-	
-		$blogList = array();
-		$blogDao = $this->dao->load('Core_Microblog');
-		$blogList = $blogDao->getOwnListByUser($userId, $pageId);
-		if ($blogList) {
-			$this->render('10000', 'Get blog list ok', array(
-					'Microblog.list' => $blogList
-			));
-		}
-		$this->render('14008', 'Get blog list failed');
+		try {
+			$userId = intval($this->param('userId'));
+			$pageId = intval($this->param('pageId'));
+			$blogDao = $this->dao->load('Core_Microblog');
+			$blogList = $blogDao->getOwnListByUser($userId, $pageId);
+			
+			if ($blogList) {
+				$this->render('10000', 'Get blog list ok', array(
+						'Microblog.list' => $blogList
+				));
+			}
+		} catch (Exception $e) {
+			$this->render('14008', 'Get blog list failed! Error: '.$e->getMessage());
+		}	
 	}
 
 
@@ -106,19 +109,22 @@ class MicroblogServer extends Demos_App_Server
 	public function checkinAction ()
 	{
 		$this->doAuth();
-		
-		// 加分
-		$userDao = $this->dao->load('Core_User');
-		$userDao -> addScore($this->user['id'] , 1);
-		
-		// 发表说说
-		$blogDao = $this->dao->load('Core_Microblog');
-		$content = $this->user['name']." 今日已签到,成功获得1积分";
-		$blogDao->create(array(
-				'userid'	=> $this->user['id'],
-				'content'	=> $content,
-		));
-		$this->render('10000','Check in ok',$content);
+		try {
+			// 加分
+			$userDao = $this->dao->load('Core_User');
+			$userDao -> addScore($this->user['id'] , 1);
+			
+			// 发表说说
+			$blogDao = $this->dao->load('Core_Microblog');
+			$content = $this->user['name']." 今日已签到,成功获得1积分";
+			$blogDao->create(array(
+					'userid'	=> $this->user['id'],
+					'content'	=> $content,
+			));
+			$this->render('10000','Check in ok',$content);
+		} catch (Exception $e) {
+			$this->render('14008', 'Check in failed! Error: '.$e->getMessage());
+		}
 	}
 	
 	/**
@@ -138,30 +144,28 @@ class MicroblogServer extends Demos_App_Server
 	public function stampAction ()
 	{
 		$this->doAuth();
-		$stamponId = intval($this->param("stamponId"));
-		// 加减分
-		$userDao = $this->dao->load('Core_User');
-		$userDao -> addScore($this->user['id'] , 1);
-		$userDao -> addScore($stamponId , -1);
-		/* 
-		// 发表说说
-		$blogDao = $this->dao->load('Core_Microblog');
-		$content = $this->user['name']." 刚刚踩了 ".$userDao->getNameById($stamponId)." 一脚，成功偷得1积分";
-		$blogDao->create(array(
-				'userid'	=> $this->user['id'],
-				'content'	=> $content
-		));
-		 */
 		
-		// 推送通知
-		$noticeDao = $this->dao->load('Core_Notice');
-		$noticeDao->create(
-			array(
-				'fromuserid'=> $this->user['id'],
-				'userid' => $stamponId,
-				'content' => $this->user['name']." 刚刚踩了你一脚，成功偷得1积分！"
-		));
-		
-		$this->render('10000','stamp friends ok',$content);
+		try {
+			$stamponId = intval($this->param("stamponId"));
+			
+			// 加减分
+			$userDao = $this->dao->load('Core_User');
+			$userDao -> addScore($this->user['id'] , 1);
+			$userDao -> addScore($stamponId , -1);
+			
+			// 推送通知
+			$noticeDao = $this->dao->load('Core_Notice');
+			$noticeDao->create(
+					array(
+							'fromuserid'=> $this->user['id'],
+							'userid' => $stamponId,
+							'content' => $this->user['name']." 刚刚踩了你一脚，成功偷得1积分！"
+					));
+			
+			$this->render('10000','Stamp friends ok',$content);
+		} catch (Exception $e) {
+			$this->render('14008', 'Stamp friends failed! Error: '.$e->getMessage());
+		}
+
 	}
 }

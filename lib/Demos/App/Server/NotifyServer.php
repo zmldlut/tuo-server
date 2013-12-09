@@ -47,15 +47,18 @@ class NotifyServer extends Demos_App_Server
 	{
 		$this->doAuth();
 		
-		// get extra customer info
-		$noticeDao = $this->dao->load('Core_Notice');
-		$noticeItem = $noticeDao->getByUser($this->user['id']);
-		if ($noticeItem) {
-			$this->render('10000', 'Get notification ok', array(
-				'Notice' => $noticeItem
-			));
+		try {
+			// get extra customer info
+			$noticeDao = $this->dao->load('Core_Notice');
+			$noticeItem = $noticeDao->getByUser($this->user['id']);
+			if ($noticeItem) {
+				$this->render('10000', 'Get notification ok', array(
+						'Notice' => $noticeItem
+				));
+			}
+		} catch (Exception $e) {
+			$this->render('14013', 'Get notification failed! Error:'.$e->getMessage());
 		}
-		$this->render('14013', 'Get notification failed');
 	}
 	
 	/**
@@ -73,14 +76,18 @@ class NotifyServer extends Demos_App_Server
 	public function noticeSetReadAction ()
 	{
 		$this->doAuth();
-		$id = $this->param('id');
-		// get extra customer info
-		$noticeDao = $this->dao->load('Core_Notice');
-		$noticeItem = $noticeDao->getById($id);
-		if ($noticeItem) {
-			$noticeDao->setReadById($id);
-			$this->render('10000', 'notification set readed ok');
-		}
-		$this->render('14013', 'notification set readed failed');
+		
+		try {
+			$id = $this->param('id');
+			// get extra customer info
+			$noticeDao = $this->dao->load('Core_Notice');
+			$noticeItem = $noticeDao->getById($id);
+			if ($noticeItem) {
+				$noticeDao->setReadById($id);
+				$this->render('10000', 'notification set readed ok');
+			}
+		} catch (Exception $e) {
+			$this->render('14013', 'notification set readed failed! Error:'.$e->getMessage());
+		}	
 	}
 }

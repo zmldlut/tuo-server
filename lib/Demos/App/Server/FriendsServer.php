@@ -45,14 +45,19 @@ class FriendsServer extends Demos_App_Server
 	public function fansListAction ()
 	{
 		$this -> doAuth();
-		$relationDao = $this->dao->load('Core_Relationship');
-		$fanslist = $relationDao -> getFansList($this->user['id']);
-		if(!$fanslist){
-			$this ->render('15001','Get fans list failed');
+		
+		try {
+			$relationDao = $this->dao->load('Core_Relationship');
+			$fanslist = $relationDao -> getFansList($this->user['id']);
+			if(!$fanslist){
+				$this ->render('15001','Get fans list failed');
+			}
+			$this->render('10000', 'Get fans list ok', array(
+					'Fans.list' => $fanslist
+			));
+		} catch (Exception $e) {
+			$this->render('14013', 'Get fans list failed! Error:'.$e->getMessage());
 		}
-		$this->render('10000', 'Get fans list ok', array(
-				'Fans.list' => $fanslist
-		));
 	}
 	/**
 	 * ---------------------------------------------------------------------------------------------
@@ -71,17 +76,20 @@ class FriendsServer extends Demos_App_Server
 	{
 		$this->doAuth();
 		
-		$name = $this->param('name');
-		// get extra user info
-		$friends = $this->dao->load('Core_User');
-		
-        $friend = $friends->getByName($name);
-		if($friend){
-			$this->render('10000', 'Search friend ok!', array(
-				'friend' => $friend
-			));
-		}
-		$this->render('14013', 'Search friend failed!');
+		try {
+			$name = $this->param('name');
+			// get extra user info
+			$friends = $this->dao->load('Core_User');
+			
+			$friend = $friends->getByName($name);
+			if($friend){
+				$this->render('10000', 'Search friend ok!', array(
+						'friend' => $friend
+				));
+			}
+		} catch (Exception $e) {
+			$this->render('14013', 'Search friend failed! Error:'.$e->getMessage());
+		}	
 	}
 	
 	/**
@@ -101,23 +109,26 @@ class FriendsServer extends Demos_App_Server
 	{
 		$this->doAuth();
 	
-		$userid = $this->param('userid');
-		// get extra user info
-		$relationship = $this->dao->load('Core_Relationship');
-// 		$friend = $relationship->getById($id);
-		if(!$relationship->existRelationShip($this->user['id'], $userid)){
-			
-			$relationship->create(array(
-				'userid' => $this->user[id],
-				'fansid' => $userid,
-			));
-			$this->render('10000', 'Add friend ok!');
-		}
-		else 
-		{
-			$this->render('10009', '该用户已经是您的好友！');
-		}
-		$this->render('14013', 'Add friend failed!');
+		try {
+			$userid = $this->param('userid');
+			// get extra user info
+			$relationship = $this->dao->load('Core_Relationship');
+			// 		$friend = $relationship->getById($id);
+			if(!$relationship->existRelationShip($this->user['id'], $userid)){
+					
+				$relationship->create(array(
+						'userid' => $this->user[id],
+						'fansid' => $userid,
+				));
+				$this->render('10000', 'Add friend ok!');
+			}
+			else
+			{
+				$this->render('10009', '该用户已经是您的好友！');
+			}
+		} catch (Exception $e) {
+			$this->render('14013', 'Add friend failed! Error:'.$e->getMessage());
+		}		
 	}
 	
 	/**
@@ -137,19 +148,22 @@ class FriendsServer extends Demos_App_Server
 	{
 		$this->doAuth();
 	
-		$userid = $this->param('userid');
-		// get extra user info
-		$relationship = $this->dao->load('Core_Relationship');
-		// 		$friend = $relationship->getById($id);
-		if($relationship->existRelationShip($this->user['id'], $userid)){
-
-			$relationship->deleteRelationShip($this->user['id'],$userid);
-			$this->render('10000', 'Del friend ok!');
-		}
-		else
-		{
-			$this->render('10009', '用户不是您的好友！');
-		}
-		$this->render('14013', 'Del friend failed!');
+		try {
+			$userid = $this->param('userid');
+			// get extra user info
+			$relationship = $this->dao->load('Core_Relationship');
+			// 		$friend = $relationship->getById($id);
+			if($relationship->existRelationShip($this->user['id'], $userid)){
+			
+				$relationship->deleteRelationShip($this->user['id'],$userid);
+				$this->render('10000', 'Del friend ok!');
+			}
+			else
+			{
+				$this->render('10009', '用户不是您的好友！');
+			}
+		} catch (Exception $e) {
+			$this->render('14013', 'Del friend failed! Error:'.$e->getMessage());
+		}	
 	}
 }

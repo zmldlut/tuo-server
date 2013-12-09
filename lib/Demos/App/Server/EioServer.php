@@ -42,15 +42,18 @@ class EioServer extends Demos_App_Server
 	{
 		$this->doAuth();
 		
-		$classifylist = array();
-		$classifyDao = $this->dao->load("Core_Eioclassify");
-		$classifylist = $classifyDao->getClassifyList();
-		if ($classifylist) {
-			$this->render('10000', 'Get classify list ok', array(
-					'Classify.list' => $classifylist
-			));
-		}
-		$this->render('14009', 'Get classify list failed');
+		try {
+			$classifylist = array();
+			$classifyDao = $this->dao->load("Core_Eioclassify");
+			$classifylist = $classifyDao->getClassifyList();
+			if ($classifylist) {
+				$this->render('10000', 'Get classify list ok', array(
+						'Classify.list' => $classifylist
+				));
+			}
+		} catch (Exception $e) {
+			$this->render('14009', 'Get classify list failed! Error:'.$e->getMessage());
+		}	
 	}
 	
 	/**
@@ -73,18 +76,21 @@ class EioServer extends Demos_App_Server
 	{
 		$this->doAuth();
 		
-		$classifyId = intval($this->param('classifyId'));
-		$pageId = intval($this->param('pageId'));
-		
-		$eioList = array();
-		$eioDao = $this->dao->load('Core_Eio');
-		$eioList = $eioDao->getListByClassify($classifyId, $pageId);
-		if ($eioList) {
-			$this->render('10000', 'Get eio list ok', array(
-					'Eio.list' => $eioList
-			));
-		}
-		$this->render('14010', 'Get eio list failed');
+		try {
+			$classifyId = intval($this->param('classifyId'));
+			$pageId = intval($this->param('pageId'));
+			
+			$eioList = array();
+			$eioDao = $this->dao->load('Core_Eio');
+			$eioList = $eioDao->getListByClassify($classifyId, $pageId);
+			if ($eioList) {
+				$this->render('10000', 'Get eio list ok', array(
+						'Eio.list' => $eioList
+				));
+			}
+		} catch (Exception $e) {
+			$this->render('14010', 'Get eio list failed! Error:'.$e->getMessage());
+		}	
 	}
 	
 	/**
@@ -107,18 +113,21 @@ class EioServer extends Demos_App_Server
 	{
 		$this->doAuth();
 		
-		$name = $this->param('name');
-		$pageId = intval($this->param('pageId'));
-		
-		$eioList = array();
-		$eioDao = $this->dao->load('Core_Eio');
-		$eioList = $eioDao->searchList($name, $pageId);
-		if ($eioList) {
-			$this->render('10000', 'Search eio list ok', array(
-					'Eio.list' => $eioList
-			));
-		}
-		$this->render('14011', 'Search eio list failed');
+		try {
+			$name = $this->param('name');
+			$pageId = intval($this->param('pageId'));
+			
+			$eioList = array();
+			$eioDao = $this->dao->load('Core_Eio');
+			$eioList = $eioDao->searchList($name, $pageId);
+			if ($eioList) {
+				$this->render('10000', 'Search eio list ok', array(
+						'Eio.list' => $eioList
+				));
+			}
+		} catch (Exception $e) {
+			$this->render('14011', 'Search eio list failed! Error:'.$e->getMessage());
+		}	
 	}
     
 	/**
@@ -141,19 +150,22 @@ class EioServer extends Demos_App_Server
 	{
 		$this->doAuth();
 		
-		$eioId = $this->param('eioId');
-		$pageId = intval($this->param('pageId'));
-		
-		$eioContentDao = $this->dao->load('Core_Eiocontent');
-		$quesList = $eioContentDao->getContent($eioId,$pageId);
-		if ($quesList) {
-			$eioDao = $this->dao->load('Core_Eio');
-			$typeName = $eioDao->getTypeName($eioId);  // 问题类型，单选、填空或、多选
-			$this->render('10000', 'Get eio content list ok', array(
-					"$typeName.list" => $quesList
-			));
-		}
-		$this->render('14012', 'Get eio content list failed');
+		try {
+			$eioId = $this->param('eioId');
+			$pageId = intval($this->param('pageId'));
+			
+			$eioContentDao = $this->dao->load('Core_Eiocontent');
+			$quesList = $eioContentDao->getContent($eioId,$pageId);
+			if ($quesList) {
+				$eioDao = $this->dao->load('Core_Eio');
+				$typeName = $eioDao->getTypeName($eioId);  // 问题类型，单选、填空或、多选
+				$this->render('10000', 'Get eio content list ok', array(
+						"$typeName.list" => $quesList
+				));
+			}
+		} catch (Exception $e) {
+			$this->render('14012', 'Get eio content list failed! Error: '.$e->getMessage());
+		}	
 	}
 	
 	/**
@@ -198,16 +210,22 @@ class EioServer extends Demos_App_Server
 	public function commentAction ()
 	{
 		$this->doAuth();
-		$eioId = $this->param('eioId');
-		$content = $this->param('cotent');
-		$eiocommentDao = $this->dao->load('Core_Eiocomment');
-		$eiocommentDao->addComment(
-				$eioId,$this->user['id'],$content);
 		
-		$microBlogDao = $this->dao->load("Core_MicroBlog");
-		$microBlogDao->addMicroBlog($this->user['id'], $content);
-		
-		$this->render('10000','Comment ok');
+		try {
+			$eioId = $this->param('eioId');
+			$content = $this->param('cotent');
+			$eiocommentDao = $this->dao->load('Core_Eiocomment');
+			$eiocommentDao->addComment(
+					$eioId,$this->user['id'],$content);
+			
+			$microBlogDao = $this->dao->load("Core_MicroBlog");
+			$microBlogDao->addMicroBlog($this->user['id'], $content);
+			
+			$this->render('10000','Comment ok');
+		} catch (Exception $e) {
+			$this->render('14012', 'Comment failed! Error: '.$e->getMessage());
+		}
+	
 	}
 	
 	/**
@@ -227,18 +245,24 @@ class EioServer extends Demos_App_Server
 	public function stampAction ()
 	{
 		$this->doAuth();
-		$eioId = $this->param('eioId');
 		
-		$eioDao = $this->dao->load('Core_Eio');
-		$eio = $eioDao->getEio($eioId);
+		try {
+			$eioId = $this->param('eioId');
+			
+			$eioDao = $this->dao->load('Core_Eio');
+			$eio = $eioDao->getEio($eioId);
+			
+			$eioDao -> stampEio($eioId);
+			
+			$content = $this->user['name']." 踩了".$eio['title']."调查问卷";
+			$microBlogDao = $this->dao->load("Core_MicroBlog");
+			$microBlogDao->addMicroBlog($this->user['id'], $content);
+			
+			$this->render('10000','Stamp eio ok');
+		} catch (Exception $e) {
+			$this->render('14012', 'Stamp eio failed! Error: '.$e->getMessage());
+		}
 		
-		$eioDao -> stampEio($eioId);
-		
-		$content = $this->user['name']." 踩了".$eio['title']."调查问卷";
-		$microBlogDao = $this->dao->load("Core_MicroBlog");
-		$microBlogDao->addMicroBlog($this->user['id'], $content);
-		
-		$this->render('10000','Stamp eio ok');
 	}
 	
 	/**
@@ -258,14 +282,19 @@ class EioServer extends Demos_App_Server
 	public function praiseAction ()
 	{
 		$this->doAuth();
-		$eioId = $this->param('eioId');
-		$eioDao = $this->dao->load('Core_Eio');
-		$eioDao -> praiseEio($eioId);
-		$eio = $eioDao->getEio($eioId);
-		$content = $this->user['name']." 赞了".$eio['title']."调查问卷！";
-		$microBlogDao = $this->dao->load("Core_MicroBlog");
-		$microBlogDao->addMicroBlog($this->user['id'], $content);
-		$this->render('10000','Praise eio ok');
+		
+		try {
+			$eioId = $this->param('eioId');
+			$eioDao = $this->dao->load('Core_Eio');
+			$eioDao -> praiseEio($eioId);
+			$eio = $eioDao->getEio($eioId);
+			$content = $this->user['name']." 赞了".$eio['title']."调查问卷！";
+			$microBlogDao = $this->dao->load("Core_MicroBlog");
+			$microBlogDao->addMicroBlog($this->user['id'], $content);
+			$this->render('10000','Praise eio ok');
+		} catch (Exception $e) {
+			$this->render('14012', 'Praise eio failed! Error: '.$e->getMessage());
+		}
+		
 	}
-	
 }
