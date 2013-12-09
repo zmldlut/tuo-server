@@ -112,7 +112,7 @@ class Core_Notice extends Demos_Dao_Core
 			->where("userid = ?", $userId)
 			->where("status = 0");
 		
-		$row = $this->dbr()->fetchRow($sql);
+		$row = $this->dbr()->fetchAll($sql);
 		$msg = trim($row['content']);
 		// when message is empty 
 		if (strlen($msg) > 0) {

@@ -89,7 +89,6 @@ $_DataMap = array(
 		'answerD'=>'answerD',
 		'answerE'=>'answerE',
 	),
-	
 );
 
 function M ($model, $data)

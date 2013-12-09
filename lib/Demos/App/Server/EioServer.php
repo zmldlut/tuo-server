@@ -225,7 +225,6 @@ class EioServer extends Demos_App_Server
 		} catch (Exception $e) {
 			$this->render('14012', 'Comment failed! Error: '.$e->getMessage());
 		}
-	
 	}
 	
 	/**
@@ -261,8 +260,7 @@ class EioServer extends Demos_App_Server
 			$this->render('10000','Stamp eio ok');
 		} catch (Exception $e) {
 			$this->render('14012', 'Stamp eio failed! Error: '.$e->getMessage());
-		}
-		
+		}	
 	}
 	
 	/**
@@ -295,6 +293,75 @@ class EioServer extends Demos_App_Server
 		} catch (Exception $e) {
 			$this->render('14012', 'Praise eio failed! Error: '.$e->getMessage());
 		}
-		
+	}
+	
+	/**
+	 * ---------------------------------------------------------------------------------------------
+	 * > 接口说明：获取做过的问卷列表接口
+	 * <code>
+	 * URL地址：/eio/myEioList
+	 * 提交方式：post
+	 * </code>
+	 * ---------------------------------------------------------------------------------------------
+	 * @title 获取做过的问卷列表接口
+	 * @action /eio/myEioList
+	 * @method post
+	 */
+	public function myEioListAction ()
+	{
+		$this->doAuth();
+	
+		try {
+			$pageId = intval($this->param('pageId'));
+			$userId =  $this->user['id'];
+			$eioResultDao = $this->dao->load("Core_Eioresult");
+			$eioDao = $this->dao->load("Core_Eio");
+			$result = $eioResultDao->getEioListByUser($userId, $pageId);
+			$list = array();
+			if(is_array($result)){
+				foreach ($result as $row) {
+					if($row['eioid']){
+						$eio = $eioDao->getEio($row['eioid']);
+						array_push($list, $eio);
+					}
+				}
+			}
+			$this->render('10000','获取做过的问卷列表成功！',array(
+				'myEioList'=>$list
+			));
+		} catch (Exception $e) {
+			$this->render('14012', '获取做过的问卷列表失败! Error: '.$e->getMessage());
+		}
+	}
+	
+	/**
+	 * ---------------------------------------------------------------------------------------------
+	 * > 接口说明：获取做过的问卷结果接口
+	 * <code>
+	 * URL地址：/eio/myEioResult
+	 * 提交方式：post
+	 * 参数#1：eioId，类型：INT，必须：YES
+	 * </code>
+	 * ---------------------------------------------------------------------------------------------
+	 * @title 获取做过的问卷结果接口
+	 * @action /eio/myEioResult
+	 * @params eioid 
+	 * @method post
+	 */
+	public function myEioResultAction ()
+	{
+		$this->doAuth();
+	
+		try {
+			$eioid = $this->param('eioid');
+			$userid = $this->user['id'];
+			$eioResultDao = $this->dao->load('Core_Eioresult');
+			$eioResult = $eioResultDao->getEioByEioId($userid, $eioid);
+			$this->render('10000','获取做过的问卷结果成功！',array(
+					'eioResult'=>$eioResult
+			));
+		} catch (Exception $e) {
+			$this->render('14012', '获取做过的问卷结果失败！ Error: '.$e->getMessage());
+		}
 	}
 }
