@@ -148,6 +148,7 @@ class FriendsServer extends Demos_App_Server
 			$userid = $this->param('userid');
 			// get extra user info
 			$relationship = $this->dao->load('Core_Relationship');
+			$user = $this->dao->load('Core_User');
 			// 		$friend = $relationship->getById($id);
 			if(!$relationship->existRelationShip($this->user['id'], $userid)){
 					
@@ -155,6 +156,7 @@ class FriendsServer extends Demos_App_Server
 						'userid' => $this->user[id],
 						'fansid' => $userid,
 				));
+				$user->addFriendscount($userid);
 				$this->render('10000', 'Add friend ok!');
 			}
 			else
@@ -187,10 +189,12 @@ class FriendsServer extends Demos_App_Server
 			$userid = $this->param('userid');
 			// get extra user info
 			$relationship = $this->dao->load('Core_Relationship');
+			$user = $this->dao->load('Core_User');
 			// 		$friend = $relationship->getById($id);
 			if($relationship->existRelationShip($this->user['id'], $userid)){
 			
 				$relationship->deleteRelationShip($this->user['id'],$userid);
+				$user->addFriendscount($userid,-1);
 				$this->render('10000', 'Del friend ok!');
 			}
 			else
