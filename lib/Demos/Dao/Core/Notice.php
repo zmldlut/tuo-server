@@ -74,33 +74,6 @@ class Core_Notice extends Demos_Dao_Core
 		}
 	}
 	
-// 	/**
-// 	 * Add fanscount by one
-// 	 * @param int $customerId
-// 	 */
-// 	public function addFanscount ($customerId, $addCount = 1)
-// 	{
-// 		$sql = $this->select()->from($this->t1, '*')
-// 			->where("customerid = ?", $customerId)
-// 			->where("status = 0");
-		
-// 		$row = $this->dbr()->fetchRow($sql);
-// 		// update
-// 		if ($row) {
-// 			$fanscount = intval($row['fanscount']) + $addCount;
-// 			$this->update(array(
-// 				'id'		=> intval($row['id']),
-// 				'fanscount'	=> $fanscount
-// 			));
-// 		// insert
-// 		} else {
-// 			$this->create(array(
-// 				'customerid'	=> $customerId,
-// 				'fanscount'		=> 1
-// 			));
-// 		}
-// 	}
-	
 	/**
 	 * Get notification list
 	 * @param int $userId
@@ -110,7 +83,8 @@ class Core_Notice extends Demos_Dao_Core
 	{
 		$sql = $this->select()->from($this->t1, '*')
 			->where("userid = ?", $userId)
-			->where("status = 0");
+			->where("status = 0")
+			->order("{$this->t1}.uptime desc");
 		
 		$row = $this->dbr()->fetchAll($sql);
 		$msg = trim($row['content']);

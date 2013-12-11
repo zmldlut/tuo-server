@@ -42,13 +42,29 @@ class MicroblogServer extends Demos_App_Server
 		try {
 			$pageId = intval($this->param('pageId'));
 			$blogDao = $this->dao->load('Core_Microblog');
+			$userDao = $this->dao->load('Core_User');
 			$blogList = $blogDao->getFansListByUser($this->user['id'], $pageId);
-			
-			if ($blogList) {
-				$this->render('10000', 'Get blog list ok', array(
-						'Microblog.list' => $blogList
-				));
+			$list = array();
+			if(is_array($blogList)){
+				foreach ($blogList as $row) {
+					if($row['userid']){
+						$username = $userDao->getNameById($row['userid']);
+						$blog = array(
+								'id' => $row['id'],
+								'userid' => $row['userid'],
+								'username' => $username, ////
+								'content' => $row['content'],
+								'uptime' => $row['uptime'],
+						);
+						array_push($list, $blog);
+					}
+				}
 			}
+			
+			$this->render('10000', 'Get blog list ok', array(
+					'Microblog.list' => $list
+			));
+
 		} catch (Exception $e) {
 			$this->render('14008', 'Get blog list failed! Error: '.$e->getMessage());
 		}	
@@ -78,14 +94,31 @@ class MicroblogServer extends Demos_App_Server
 		try {
 			$userId = intval($this->param('userId'));
 			$pageId = intval($this->param('pageId'));
+			$userDao = $this->dao->load('Core_User');
 			$blogDao = $this->dao->load('Core_Microblog');
 			$blogList = $blogDao->getOwnListByUser($userId, $pageId);
 			
-			if ($blogList) {
-				$this->render('10000', 'Get blog list ok', array(
-						'Microblog.list' => $blogList
-				));
+			$username = $userDao->getNameById($userId);
+			$list = array();
+			
+			if(is_array($blogList)){
+				foreach ($blogList as $row) {
+					if($row['userid']){
+						$blog = array(
+								'id' => $row['id'],
+								'userid' => $row['userid'],
+								'username' => $username, ////
+								'content' => $row['content'],
+								'uptime' => $row['uptime'],
+						);
+						array_push($list, $blog);
+					}
+				}
 			}
+			$this->render('10000', 'Get blog list ok', array(
+					'Microblog.list' => $list
+			));
+			
 		} catch (Exception $e) {
 			$this->render('14008', 'Get blog list failed! Error: '.$e->getMessage());
 		}	

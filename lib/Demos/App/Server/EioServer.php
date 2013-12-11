@@ -51,6 +51,7 @@ class EioServer extends Demos_App_Server
 						'Classify.list' => $classifylist
 				));
 			}
+			$this->render('14009', 'Get classify list failed! Error:'.$e->getMessage());
 		} catch (Exception $e) {
 			$this->render('14009', 'Get classify list failed! Error:'.$e->getMessage());
 		}	
@@ -83,11 +84,11 @@ class EioServer extends Demos_App_Server
 			$eioList = array();
 			$eioDao = $this->dao->load('Core_Eio');
 			$eioList = $eioDao->getListByClassify($classifyId, $pageId);
-			if ($eioList) {
-				$this->render('10000', 'Get eio list ok', array(
-						'Eio.list' => $eioList
-				));
-			}
+	
+			$this->render('10000', 'Get eio list ok', array(
+					'Eio.list' => $eioList
+			));
+
 		} catch (Exception $e) {
 			$this->render('14010', 'Get eio list failed! Error:'.$e->getMessage());
 		}	
@@ -120,11 +121,11 @@ class EioServer extends Demos_App_Server
 			$eioList = array();
 			$eioDao = $this->dao->load('Core_Eio');
 			$eioList = $eioDao->searchList($name, $pageId);
-			if ($eioList) {
-				$this->render('10000', 'Search eio list ok', array(
-						'Eio.list' => $eioList
-				));
-			}
+
+			$this->render('10000', 'Search eio list ok', array(
+					'Eio.list' => $eioList
+			));
+
 		} catch (Exception $e) {
 			$this->render('14011', 'Search eio list failed! Error:'.$e->getMessage());
 		}	
@@ -156,13 +157,9 @@ class EioServer extends Demos_App_Server
 			
 			$eioContentDao = $this->dao->load('Core_Eiocontent');
 			$quesList = $eioContentDao->getContent($eioId,$pageId);
-			if ($quesList) {
-				$eioDao = $this->dao->load('Core_Eio');
-				$typeName = $eioDao->getTypeName($eioId);  // 问题类型，单选、填空或、多选
-				$this->render('10000', 'Get eio content list ok', array(
-						"$typeName.list" => $quesList
-				));
-			}
+			$this->render('10000', 'Get eio content list ok', array(
+					"$typeName.list" => $quesList
+			));
 		} catch (Exception $e) {
 			$this->render('14012', 'Get eio content list failed! Error: '.$e->getMessage());
 		}	

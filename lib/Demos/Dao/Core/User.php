@@ -50,7 +50,10 @@ class Core_User extends Demos_Dao_Core
 			->where("{$this->t1}.pass = ?", $pass);
 		
 		$user = $this->dbr()->fetchRow($sql);
-		if ($user) return $user;
+		if ($user) {
+			$user['faceurl'] = Demos_Util_Image::getFaceUrl($user['face']);
+			return $user;
+		}
 		return false;
 	}
 	
@@ -80,12 +83,14 @@ class Core_User extends Demos_Dao_Core
 	 * @param int $name
 	 */
 	public function getByName ($name) {
+		$name = "%$name%";
 		$sql = $this->select()
 		->from($this->t1, '*')
-		->where("{$this->t1}.name = ?", $name);
-		$user = $this->dbr()->fetchRow($sql);
-		$user['faceurl'] = Demos_Util_Image::getFaceUrl($user['face']);
-		return $user;
+		->where("{$this->t1}.name LIKE ?", $name);
+		$userlist = $this->dbr()->fetchAll($sql);
+		
+// 		$user['faceurl'] = Demos_Util_Image::getFaceUrl($user['face']);
+		return $userlist;
 	}
 	
 	/**

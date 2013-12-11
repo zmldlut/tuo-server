@@ -87,46 +87,4 @@ class Core_Relationship extends Demos_Dao_Core
 		$wheresql = "userid = $userIdA and fansid = $userIdB";
 		return $this->dbw()->delete($this->t1, $wheresql);
 	}
-	
-
-	
-// 	/**
-// 	 * Check fans data exists
-// 	 * @param int $customerId
-// 	 * @param int $fansId
-// 	 * @return array
-// 	 */
-// 	public function exist ($customerId, $fansId)
-// 	{
-// 		$sql = $this->select()->from($this->t1, '(1)')
-// 			->where("customerid = ?", $customerId)
-// 			->where("fansid = ?", $fansId);
-		
-// 		return $this->dbr()->fetchOne($sql);
-// 	}
-	
-// 	/**
-// 	 * Delete fans data
-// 	 * @param int $customerId
-// 	 * @param int $fansId
-// 	 */
-// 	public function delete ($customerId, $fansId) 
-// 	{
-// 		$wheresql = "customerid = $customerId and fansid = $fansId";
-// 		return $this->dbw()->delete($this->t1, $wheresql);
-// 	}
-	
-// 	/**
-// 	 * Count fans number
-// 	 * @param int $customerId
-// 	 * @param int $fansId
-// 	 * @return array
-// 	 */
-// 	public function countFans ($customerId)
-// 	{
-// 		$sql = $this->select()->from($this->t1, '(1)')
-// 			->where("customerid = ?", $customerId);
-		
-// 		return $this->dbr()->fetchOne($sql);
-// 	}
 }

@@ -49,4 +49,15 @@ class Core_Eioclassify extends Demos_Dao_Core
 	
 		return $list;
 	}
+	
+	/**
+	 * 获取问卷的问题类型
+	 * @param unknown $eioId
+	 * @return string name
+	 */
+	public function getClassifyName($id)
+	{
+		$eioClassify = $this->read($id);
+		return $eioClassify['name'];
+	}
 }

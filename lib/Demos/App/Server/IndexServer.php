@@ -88,6 +88,7 @@ class IndexServer extends Demos_App_Server
 					));
 				}
 			}
+			$this->render('14001', 'Login failed!');
 			// return sid only for client
 			$user = array('sid' => session_id());
 		} catch (Exception $e) {

@@ -61,7 +61,6 @@ class Core_Microblog extends Demos_Dao_Core
 	 */
 	public function getOwnListByUser($userId,$pageId=0)
 	{
-		$list = array();
 		$sql = $this->select()
 		->from($this->t1, '*')
 		->where("{$this->t1}.userid = ?", $userId)
@@ -69,19 +68,7 @@ class Core_Microblog extends Demos_Dao_Core
 		->limitPage($pageId, 10);
 	
 		$res = $this->dbr()->fetchAll($sql);
-		if ($res) {
-			$userDao = $this->load("Core_User");
-			foreach ($res as $row) {
-				$blog = array(
-						'id'		=> $row['id'],
-						'name'		=> $userDao -> getNameById($row['userid']),
-						'content'	=> $row['content'],
-						'uptime'	=> $row['uptime'],
-				);
-				array_push($list, $blog);
-			}
-		}
-		return $list;
+		return $res;
 	}
 	
 	/**
@@ -92,7 +79,6 @@ class Core_Microblog extends Demos_Dao_Core
 	 */
 	public function getFansListByUser($userId,$pageId=0)
 	{
-		$list = array();
 		$relationDao = $this->load("Core_Relationship");
 		$fansArr = $relationDao -> getFansList($userId);
 	
@@ -117,18 +103,6 @@ class Core_Microblog extends Demos_Dao_Core
 		->limitPage($pageId, 10);
 	
 		$res = $this->dbr()->fetchAll($sql);
-		if ($res) {
-			$userDao = $this->load("Core_User");
-			foreach ($res as $row) {
-				$blog = array(
-						'id'		=> $row['id'],
-						'name'		=> $userDao -> getNameById($row['userid']),
-						'content'	=> $row['content'],
-						'uptime'	=> $row['uptime'],
-				);
-				array_push($list, $blog);
-			}
-		}
-		return $list;
+		return $res;
 	}
 }

@@ -1,6 +1,38 @@
 <?php 
 $_DataMap = array(
-	
+	'User' => array(
+		'id' => 'id',
+		'sid' => 'sid',
+		'name' => 'name',
+		'sign' => 'sign',
+		'face' => 'face',
+		'faceurl' => 'faceurl',
+		'sex' => 'sex',
+		'birthday' => 'birthday',
+		'location' => 'location',
+		'eiocount' => 'eiocount',
+		'fanscount' => 'fanscount',
+		'score' => 'score',
+		'uptime' => 'uptime',
+	),	
+	'Notice' => array(
+		'id' => 'id',
+		'fromuserid' => 'fromuserid',
+		'fromname' => 'fromname',//// 
+		'userid' => 'userid',
+		'username' => 'username', ////
+		'content' => 'content',
+		'type' => 'type',
+		'status' => 'status',
+		'uptime' => 'uptime',
+	),
+	'Microblog' => array(
+		'id' => 'id',
+		'userid' => 'userid',
+		'username' => 'username',
+		'content' => 'content',
+		'uptime' => 'uptime',
+	),
 	'Fans' => array(
 		'id' => 'id',
 		'name' => 'name',
@@ -13,29 +45,6 @@ $_DataMap = array(
 		'eiocount' => 'eiocount',
 		'fanscount' => 'fanscount',
 		'score' => 'score',	 
-	),
-	
-	'Microblog' => array(
-		'id' => 'id',
-		'userid' => 'userid',
-		'name' => 'name',
-		'content' => 'content',
-		'uptime' => 'uptime',
-	),
-
-	'Image' => array(
-		'id' => 'id',
-		'url' => 'url',
-		'type' => 'type',
-	),
-	'Notice' => array(
-		'id' => 'id',
-		'fromuserid' => 'fromuserid',
-		'userid' => 'userid',
-		'content' => 'content',
-		'type' => 'type',
-		'status' => 'status',
-		'uptime' => 'uptime',
 	),
 	'Classify' =>array(
 		'id' =>'id',
@@ -59,13 +68,13 @@ $_DataMap = array(
 		'praisecount' => 'praisecount',
 		'stampcount' => 'stampcount',
 		'publishtime' => 'publishtime',
-		'uptime' => 'uptime',
 	),
-		
+
 	// 问卷问题的类型，对应了eiotype表
 	'SimpleSelectQuestion' =>array( // 单项选择
 		'id'=>'id',
 		'eioid'=>'eioid',
+		'questionnum' => 'questionnum',
 		'question'=>'question',
 		'answerA'=>'answerA',
 		'answerB'=>'answerB',
@@ -76,12 +85,14 @@ $_DataMap = array(
 	'InputQuestion' =>array( 		// 填空
 		'id'=>'id',
 		'eioid'=>'eioid',
+		'questionnum' => 'questionnum',
 		'question'=>'question',
 		'answerA'=>'answer',
 	),
 	'MultiSelectQuestion' =>array( // 多项选择
 		'id'=>'id',
 		'eioid'=>'eioid',
+		'questionnum' => 'questionnum',
 		'question'=>'question',
 		'answerA'=>'answerA',
 		'answerB'=>'answerB',
@@ -89,6 +100,25 @@ $_DataMap = array(
 		'answerD'=>'answerD',
 		'answerE'=>'answerE',
 	),
+	'EioResult' => array(
+		'id'=>'id',
+		'eioid'=>'eioid',
+		'userid' => 'userid',
+		'result' => 'result',
+		'uptime' => 'uptime',
+	),
+	'QuestionResult' => array(
+		'id' => 'id',
+		'eiocontentid' => 'eiocontentid',
+		'eioquestion' => 'eioquestion',
+		'answer' => 'answer',
+		'status' => 'status',
+	),
+	'Image' => array(
+			'id' => 'id',
+			'url' => 'url',
+			'type' => 'type',
+	),	
 );
 
 function M ($model, $data)

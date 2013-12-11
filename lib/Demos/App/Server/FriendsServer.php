@@ -45,15 +45,33 @@ class FriendsServer extends Demos_App_Server
 	public function fansListAction ()
 	{
 		$this -> doAuth();
-		
+
 		try {
 			$relationDao = $this->dao->load('Core_Relationship');
+			$userDao = $this->dao->load('Core_User');
 			$fanslist = $relationDao -> getFansList($this->user['id']);
-			if(!$fanslist){
-				$this ->render('15001','Get fans list failed');
+			$list = array();
+			if(is_array($fanslist)){
+				foreach ($fanslist as $row) {
+					$user = $userDao->getById($row['fansid']);
+					$fan = array(
+						'id' => $row['fansid'],
+						'name' => $row['name'],
+						'sign' => $row['sign'],
+						'face' => $row['face'],
+						'faceurl' => $row['faceurl'],
+						'sex' => $row['sex'],
+						'birthday' => $row['birthday'],
+						'location' => $row['location'],
+						'eiocount' => $row['eiocount'],
+						'fanscount' => $row['fanscount'],
+						'score' => $row['score'],
+					);
+					array_push($list,$fan);
+				}
 			}
 			$this->render('10000', 'Get fans list ok', array(
-					'Fans.list' => $fanslist
+					'Fans.list' => $list
 			));
 		} catch (Exception $e) {
 			$this->render('14013', 'Get fans list failed! Error:'.$e->getMessage());
@@ -81,12 +99,29 @@ class FriendsServer extends Demos_App_Server
 			// get extra user info
 			$friends = $this->dao->load('Core_User');
 			
-			$friend = $friends->getByName($name);
-			if($friend){
-				$this->render('10000', 'Search friend ok!', array(
-						'friend' => $friend
-				));
+			$fanslist = $friends->getByName($name);
+			$list = array();
+			if(is_array($fanslist)){
+				foreach ($fanslist as $row) {
+					$fan = array(
+						'id' => $row['fansid'],
+						'name' => $row['name'],
+						'sign' => $row['sign'],
+						'face' => $row['face'],
+						'faceurl' => Demos_Util_Image::getFaceUrl($row['face']),
+						'sex' => $row['sex'],
+						'birthday' => $row['birthday'],
+						'location' => $row['location'],
+						'eiocount' => $row['eiocount'],
+						'fanscount' => $row['fanscount'],
+						'score' => $row['score'],
+					);
+					array_push($list,$fan);
+				}
 			}
+			$this->render('10000', 'Search friend ok!', array(
+					'Fans.list' => $list
+			));
 		} catch (Exception $e) {
 			$this->render('14013', 'Search friend failed! Error:'.$e->getMessage());
 		}	
