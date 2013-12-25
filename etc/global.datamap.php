@@ -50,7 +50,7 @@ $_DataMap = array(
 		'id' =>'id',
 		'name' =>'name',
 		'icon' =>'icon',
-		'uptime'=>'time',
+		'uptime'=>'uptime',        
 	),
 	'Eio' =>array(
 		'id' => 'id',

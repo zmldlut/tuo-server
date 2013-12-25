@@ -137,7 +137,18 @@ class IndexServer extends Demos_App_Server
 	{
 		try {
 			// return 注册成功
-			$registeruser = $this->param('user');
+			$registeruser = array();
+			$registeruser['name'] = $this->param('name');
+			$registeruser['pass'] = $this->param('pass');
+			$registeruser['sign'] = $this->param('sign');
+			$registeruser['face'] = $this->param('face');
+			$registeruser['sex'] = intval($this->param('sex'));
+			$registeruser['birthday'] = $this->param('birthday');
+			$registeruser['location'] = $this->param('location');
+			$registeruser['eiocount'] = intval($this->param('eiocount'));
+			$registeruser['fanscount'] = intval($this->param('fanscount'));
+			$registeruser['score'] = intval($this->param('score'));
+			
 			$user = $this->dao->load('Core_User');
 			
 			//判断账号是否存在
