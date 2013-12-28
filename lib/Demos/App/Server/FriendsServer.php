@@ -34,12 +34,12 @@ class FriendsServer extends Demos_App_Server
 	 * ---------------------------------------------------------------------------------------------
 	 * > 接口说明：获取好友列表
 	 * <code>
-	 * URL地址：/Friends/fansList
+	 * URL地址：/friends/fansList
 	 * 提交方式：GET
 	 * </code>
 	 * ---------------------------------------------------------------------------------------------
 	 * @title 获取好友列表
-	 * @action /Friends/fansList
+	 * @action /friends/fansList
 	 * @method get
 	 */
 	public function fansListAction ()
@@ -53,9 +53,9 @@ class FriendsServer extends Demos_App_Server
 			$list = array();
 			if(is_array($fanslist)){
 				foreach ($fanslist as $row) {
-					$user = $userDao->getById($row['fansid']);
+					$user = $userDao->getById($row['id']);
 					$fan = array(
-						'id' => $row['fansid'],
+						'id' => $row['id'],
 						'name' => $row['name'],
 						'sign' => $row['sign'],
 						'face' => $row['face'],
@@ -81,12 +81,12 @@ class FriendsServer extends Demos_App_Server
 	 * ---------------------------------------------------------------------------------------------
 	 * > 接口说明：搜索好友接口
 	 * <code>
-	 * URL地址：/Friends/search
+	 * URL地址：/friends/search
 	 * 提交方式：POST
 	 * </code>
 	 * ---------------------------------------------------------------------------------------------
 	 * @title 搜索好友接口
-	 * @action /Friends/search
+	 * @action /friends/search
 	 * @params name james STRING
 	 * @method get
 	 */
@@ -131,12 +131,12 @@ class FriendsServer extends Demos_App_Server
 	 * ---------------------------------------------------------------------------------------------
 	 * > 接口说明：添加好友接口
 	 * <code>
-	 * URL地址：/Friends/add
+	 * URL地址：/friends/add
 	 * 提交方式：POST
 	 * </code>
 	 * ---------------------------------------------------------------------------------------------
 	 * @title 添加好友接口
-	 * @action /Friends/add
+	 * @action /friends/add
 	 * @params userid 1 INT
 	 * @method get
 	 */
@@ -172,12 +172,12 @@ class FriendsServer extends Demos_App_Server
 	 * ---------------------------------------------------------------------------------------------
 	 * > 接口说明：删除好友接口
 	 * <code>
-	 * URL地址：/Friends/del
+	 * URL地址：/friends/del
 	 * 提交方式：POST
 	 * </code>
 	 * ---------------------------------------------------------------------------------------------
 	 * @title 删除好友接口
-	 * @action /Friends/del
+	 * @action /friends/del
 	 * @params userid 1 INT
 	 * @method get
 	 */

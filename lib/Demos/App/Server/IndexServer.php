@@ -191,11 +191,15 @@ class IndexServer extends Demos_App_Server
 	 * > 接口说明：更新用户信息接口
 	 * <code>
 	 * URL地址：/index/update
+	 * 参数#1：key，类型：STRING，必须：YES，示例：sign
+	 * 参数#2：val，类型：STRING，必须：YES，示例：james
 	 * 提交方式：POST
 	 * </code>
 	 * ---------------------------------------------------------------------------------------------
 	 * @title 更新用户信息接口
 	 * @action /index/update
+	 * @params key sign  STRING
+	 * @params val james STRING
 	 * @method post
 	 */
 	public function updateAction ()
@@ -203,25 +207,15 @@ class IndexServer extends Demos_App_Server
 		$this->doAuth();
 
 		try {
-			$registeruser = $this->param('user');
+			
+			$key = $this->param('key');
+			$val = $this->param('val');
+			
 			$user = $this->dao->load('Core_User');
 			
-			//判断账号是否存在
-			if(!$user->getByName($registeruser['name'])){
-				$this->render('10009', 'This account is not exists!');
-			}
 			$user->update(array(
-					'id' => $registeruser['id'],
-					'name' => $registeruser['name'],
-					'pass' => $registeruser['pass'],
-					'sign' => $registeruser['sign'],
-					'face' => $registeruser['face'],
-					'sex' => $registeruser['sex'],
-					'birthday' => $registeruser['birthday'],
-					'location' => $registeruser['location'],
-					'eiocount' => $registeruser['eiocount'],
-					'fanscount' => $registeruser['fanscount'],
-					'score' => $registeruser['score'],
+					'id' => $this->user['id'],
+					$key => $val
 			));
 			$this->render('10000', '个人信息更新成功！');
 		} catch (Exception $e) {

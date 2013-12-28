@@ -26,7 +26,7 @@ class MicroblogServer extends Demos_App_Server
 	 * ---------------------------------------------------------------------------------------------
 	 * > 接口说明：获取好友说说列表 
 	 * <code>
-	 * URL地址：/Microblog/blogList
+	 * URL地址：/microblog/blogList
 	 * 提交方式：GET
 	 * 参数#1：pageId，类型：INT，必须：YES
 	 * </code>
@@ -75,7 +75,7 @@ class MicroblogServer extends Demos_App_Server
 	 * ---------------------------------------------------------------------------------------------
 	 * > 接口说明：获取用户说说列表
 	 * <code>
-	 * URL地址：/Microblog/userBlogList
+	 * URL地址：/microblog/userBlogList
 	 * 提交方式：GET
 	 * 参数#1：userId，类型：INT，必须：YES
 	 * 参数#2：pageId，类型：INT，必须：YES
