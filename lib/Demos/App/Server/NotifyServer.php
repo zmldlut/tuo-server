@@ -49,6 +49,8 @@ class NotifyServer extends Demos_App_Server
 		
 		try {
 			// get extra customer info
+			$userDao = $this->dao->load('Core_User');
+			
 			$noticeDao = $this->dao->load('Core_Notice');
 			$noticeList = $noticeDao->getByUser($this->user['id']);
 			$list = array();

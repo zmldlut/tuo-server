@@ -29,7 +29,7 @@ class FeedbackServer extends Demos_App_Server
 	 * 提交方式：POST
 	 * </code>
 	 * ---------------------------------------------------------------------------------------------
-	 * @title 用户注册接口
+	 * @title 反馈信息接口
 	 * @action /feedback/add
 	 * @params userid 1  INT
 	 * @params username james STRING

@@ -87,13 +87,14 @@ class Core_Notice extends Demos_Dao_Core
 			->order("{$this->t1}.uptime desc");
 		
 		$row = $this->dbr()->fetchAll($sql);
-		$msg = trim($row['content']);
-		// when message is empty 
-		if (strlen($msg) > 0) {
-			return $row;
-		}
-		// return null
-		return null;
+		return $row;
+// 		$msg = trim($row['content']);
+// 		// when message is empty 
+// 		if (strlen($msg) > 0) {
+// 			return $row;
+// 		}
+// 		// return null
+// 		return null;
 	}
 	
 	/**

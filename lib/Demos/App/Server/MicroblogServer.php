@@ -154,7 +154,9 @@ class MicroblogServer extends Demos_App_Server
 					'userid'	=> $this->user['id'],
 					'content'	=> $content,
 			));
-			$this->render('10000','Check in ok',$content);
+			$this->render('10000','Check in ok',array(
+				"CheckIn" => $content
+			));
 		} catch (Exception $e) {
 			$this->render('14008', 'Check in failed! Error: '.$e->getMessage());
 		}
@@ -195,7 +197,9 @@ class MicroblogServer extends Demos_App_Server
 							'content' => $this->user['name']." 刚刚踩了你一脚，成功偷得1积分！"
 					));
 			
-			$this->render('10000','Stamp friends ok',$content);
+			$this->render('10000','Stamp friends ok',array(
+				'stamp' => $content
+			));
 		} catch (Exception $e) {
 			$this->render('14008', 'Stamp friends failed! Error: '.$e->getMessage());
 		}
