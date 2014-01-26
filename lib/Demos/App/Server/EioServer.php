@@ -157,6 +157,9 @@ class EioServer extends Demos_App_Server
 			
 			$eioContentDao = $this->dao->load('Core_Eiocontent');
 			$quesList = $eioContentDao->getContent($eioId,$pageId);
+			
+			$eioDao = $this->dao->load('Core_Eio');
+			$typeName = $eioDao-> getTypeName($eioId);
 			$this->render('10000', 'Get eio content list ok', array(
 					"$typeName.list" => $quesList
 			));
@@ -178,14 +181,76 @@ class EioServer extends Demos_App_Server
 	 * @title 提交问题结果，返回处理数据
 	 * @action /eio/dispose
 	 * @params eioId  1 INT
-	 * @params pageId 0 INT
+	 * @params result {"1":"1","2":"2","3":"1"} STRING
 	 * @method post
 	 */
 	public function disposeAction ()
 	{
 		$this->doAuth();
 		// TODO add dispse method
+		//echo $this->user['id'];
+		$eioId = $this->param('eioId');
+		$result = $this->param('result');
+		$resultList = json_decode($result,true); // 强制生成数组 json_decode($arr,true)
+        
 		
+		// 获取问卷类型决定评分方式
+		$eioDao = $this->dao->load('Core_Eio');
+		$typeName = $eioDao-> getTypeName($eioId);
+		
+		// 添加完成次数
+		$eioDao->addDidcount($eioId);
+		
+		$score = 0;
+		if(!strcmp($typeName,'SimpleSelectQuestion')) // 单项选择题
+		{
+		    
+			$eioContentDao = $this->dao->load('Core_Eiocontent');
+			$trueList = $eioContentDao->listTrueAnswer($eioId);
+            // 计算分数
+			foreach ($trueList as $id=>$value){
+				if(!strcmp($resultList[$id],$value))
+					$score++;
+			}
+		}
+		// 由分数区间判断所属范围levelABCD的相应信息
+		$levelMessage = $eioDao->getLevelMessage($eioId,$score);
+		$feedback = $score.'#'.$levelMessage;
+		
+		// 为用户加分
+		$userDao = $this->dao->load('Core_User');
+		$userDao -> addScore($this->user['id'] , $score);
+		
+		// 发表说说
+		$blogDao = $this->dao->load('Core_Microblog');
+		$eio = $eioDao->getEio($eioId);
+		$eiotitle = $eio['title'];
+		$content = $this->user['name']." 刚刚做了问卷 ".$eiotitle." ，赢得了".$score."积分！";
+		$blogDao->create(array(
+				'userid'	=> $this->user['id'],
+				'content'	=> $content,
+		));
+		
+		// 添加Eioresult,结果保存格式:用户结果(json字符串)#分数#反馈信息
+		$merge = $result.'#'.$feedback;
+		$eioresultDao = $this->dao->load('Core_Eioresult');
+		$eioresultDao->create(array(
+		        'userid' => $this->user['id'],
+		        'eioid'  => $eioId,
+		        'result' => $merge,
+		));
+		$this->render('10000','Dispose result OK',$feedback);
+		
+	}
+	public function testAction()
+	{
+	    try {
+	        $eioDao = $this->dao->load('Core_Eio');
+	        echo $eioDao->getLevelMessage(1,6);
+	    } catch (Exception $e) {
+	        echo 'wrong';
+	    }
+	    
 	}
 	
 	/**

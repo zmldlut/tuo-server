@@ -80,7 +80,7 @@ $_DataMap = array(
 		'answerB'=>'answerB',
 		'answerC'=>'answerC',
 		'answerD'=>'answerD',
-		'trueanswer'=>'trueanswer',
+		'answerE'=>'answerE',
 	),
 	'InputQuestion' =>array( 		// 填空
 		'id'=>'id',

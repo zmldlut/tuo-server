@@ -146,4 +146,24 @@ class Core_Eio extends Demos_Dao_Core
 		$this->update($eio);
 	}
 	
+	public function getLevelMessage($id,$score){
+	    $eio = $this->read($id);
+	    $count = $eio['questioncount'];
+	    $average = $count/4;
+	    if($score>(3*$average))
+	        return $eio['levelA'];
+	    if($score>(2*$average))
+	        return $eio['levelB'];
+	    if($score>($average))
+	        return $eio['levelC'];
+	    else 
+	        return $eio['levelD'];
+	    
+	}
+	public function addDidcount($id){
+	    $eio = $this->read($id);
+	    $eio['didcount'] = intval($eio['didcount']) + 1;
+	    $this->update($eio);
+	}
+	
 }

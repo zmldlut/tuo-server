@@ -53,4 +53,14 @@ class Core_Eiocontent extends Demos_Dao_Core
 		$list = $this->dbr()->fetchAll($sql);
 		return $list;
 	}
+	
+	public function listTrueAnswer($eioId)
+	{
+		$list = array();
+		$res = $this->getContent($eioId);
+		foreach ($res as $row){
+			$list[$row['id']] = $row['trueanswer'];
+		}
+		return $list;
+	}
 }

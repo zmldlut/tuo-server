@@ -39,6 +39,6 @@ class Core_Eiotype extends Demos_Dao_Core
 	public function getName($id)
 	{
 		$eiotype = $this->read($id);
-		return $eiotype['name'];
+		return $eiotype['typename'];
 	}
 }
