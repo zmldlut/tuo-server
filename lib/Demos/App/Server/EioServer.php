@@ -242,12 +242,20 @@ class EioServer extends Demos_App_Server
 		$this->render('10000','Dispose result OK',$feedback);
 		
 	}
+	/**
+	 *	use to test
+	 */
 	public function testAction()
 	{
 	    try {
-	        $eioDao = $this->dao->load('Core_Eio');
-	        echo $eioDao->getLevelMessage(1,6);
+
+	       /* $eioDao = $this->dao->load('Core_Eio');
+	        echo $eioDao->getaLevelMessage(1,6);*/
+	       print($heh);
+	       //echo hello;
+	       print(hello);
 	    } catch (Exception $e) {
+	    	echo 'get'.$e;
 	        echo 'wrong';
 	    }
 	    
