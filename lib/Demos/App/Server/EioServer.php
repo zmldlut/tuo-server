@@ -233,13 +233,14 @@ class EioServer extends Demos_App_Server
 		
 		// 添加Eioresult,结果保存格式:用户结果(json字符串)#分数#反馈信息
 		$merge = $result.'#'.$feedback;
-		$eioresultDao = $this->dao->load('Core_Eioresult');
-		$eioresultDao->create(array(
+		$eioResult = array(
 		        'userid' => $this->user['id'],
 		        'eioid'  => $eioId,
 		        'result' => $merge,
-		));
-		$this->render('10000','Dispose result OK',$feedback);
+		        );
+		$eioresultDao = $this->dao->load('Core_Eioresult');
+		$eioresultDao->create($eioResult);
+		$this->render('10000','Dispose result OK',array('EioResult'=>$eioResult));
 		
 	}
 	/**
@@ -274,7 +275,7 @@ class EioServer extends Demos_App_Server
 	 * @title 评论问卷接口
 	 * @action /eio/comment
 	 * @params eioId  1 INT
-	 * @params cotent '' string
+	 * @params content '' string
 	 * @method post
 	 */
 	public function commentAction ()
@@ -283,7 +284,7 @@ class EioServer extends Demos_App_Server
 		
 		try {
 			$eioId = $this->param('eioId');
-			$content = $this->param('cotent');
+			$content = $this->param('content');
 			$eiocommentDao = $this->dao->load('Core_Eiocomment');
 			$eiocommentDao->addComment(
 					$eioId,$this->user['id'],$content);
@@ -295,6 +296,32 @@ class EioServer extends Demos_App_Server
 		} catch (Exception $e) {
 			$this->render('14012', 'Comment failed! Error: '.$e->getMessage());
 		}
+	}
+	
+	/**
+	 * @title 获取某问卷的评论列表
+	 * @action /eio/listcomment
+	 * @params eioId  1 INT
+	 * @params pageId 0 INT
+	 * @method post
+	 */
+	public function listcommentAction ()
+	{
+	    $this->doAuth();
+	    $eioId = $this->param('eioId');
+	    $pageId = intval($this->param('pageId'));
+	    try {
+    	    $list = array();
+    	    $eiocommentDao = $this->dao->load('Core_Eiocomment');
+    	    $list = $eiocommentDao->getListByEio($eioId,$pageId);
+    	    if(is_array($list)){
+                $this->render('10000', 'Get eio comment list ok', array(
+                        'Microblog.list' => $list
+                ));
+	        }
+	    } catch (Exception $e) {
+	        $this->render('14020','Get eio comment failed');
+	    }
 	}
 	
 	/**

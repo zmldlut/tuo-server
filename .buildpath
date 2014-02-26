@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <buildpath>
 	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
-	<buildpathentry external="true" kind="lib" path="C:/win7 Desktop/YII/yii-1.1.13.e9e4a0/framework"/>
+	<buildpathentry external="true" kind="lib" path="C:/win7 Desktop/tasker/hush-framework"/>
 	<buildpathentry kind="src" path=""/>
 </buildpath>

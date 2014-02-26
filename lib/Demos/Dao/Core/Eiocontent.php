@@ -48,8 +48,8 @@ class Core_Eiocontent extends Demos_Dao_Core
 		$list = array();
 		$sql = $this->select()
 		->from($this->t1, '*')
-		->where("{$this->t1}.eioid =?", $eioId)
-		->limitPage($pageId, 10);
+		->where("{$this->t1}.eioid =?", $eioId);
+//		->limitPage($pageId, 10); // 问题数量有限不使用分页
 		$list = $this->dbr()->fetchAll($sql);
 		return $list;
 	}

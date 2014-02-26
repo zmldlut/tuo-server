@@ -56,12 +56,8 @@ class Core_Eiocomment extends Demos_Dao_Core
 			$userDao = $this->load('Core_User');
 			foreach ($res as $row) {
 				$userName = $userDao->getNameById($row['userid']);
-				$comment = array(
-					'id'		=> $row['id'],
-					'content'	=> "$userName: ".$row['content'],
-					'uptime'	=> $row['uptime'],
-				);
-				array_push($list, $comment);
+				$row['username'] = $userName;
+				array_push($list, $row);
 			}
 		}
 		return $list;
