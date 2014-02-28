@@ -104,7 +104,7 @@ class FriendsServer extends Demos_App_Server
 			if(is_array($fanslist)){
 				foreach ($fanslist as $row) {
 					$fan = array(
-						'id' => $row['fansid'],
+						'id' => $row['id'],
 						'name' => $row['name'],
 						'sign' => $row['sign'],
 						'face' => $row['face'],
